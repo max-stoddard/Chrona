@@ -1,5 +1,4 @@
 # Maven noise
-target/
 .settings/
 # VCS
 .git
