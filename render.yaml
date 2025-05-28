@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: study-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: true
+
+  - type: web
+    name: study-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    startCommand: ""            # taken from CMD
+    plan: free
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
