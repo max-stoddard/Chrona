@@ -1,0 +1,42 @@
+name: Back-end CI
+
+on:
+  push:
+    paths: 
+      - 'backend/**'
+      - '.github/workflows/backend.yml'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: backend
+
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '17'
+        cache: maven
+    
+    - name: Unit-test
+      run: |
+        ./mvnw -B verify      # tests
+        
+    - name: Build jar
+      run: |
+        ./mvnw -B package -DskipTests
+    
+    - name: Build Docker image
+      run: |
+        docker build -t chrona-backend:${{ github.sha }} .

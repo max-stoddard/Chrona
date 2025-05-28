@@ -1,0 +1,28 @@
+# Exported from Render on 2025-05-28T03:24:14Z
+services:
+- type: web
+  name: Chrona Frontend
+  runtime: static
+  repo: https://github.com/max-stoddard/Chrona
+  envVars:
+  - key: VITE_SUPABASE_ANON_KEY
+    sync: false
+  - key: VITE_SUPABASE_URL
+    sync: false
+  buildCommand: npm install; npm run build
+  staticPublishPath: dist
+  autoDeployTrigger: commit
+  rootDir: frontend
+
+- type: web
+  name: Chrona Backend
+  runtime: docker
+  repo: https://github.com/max-stoddard/Chrona
+  plan: free
+  region: frankfurt
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+  autoDeployTrigger: commit
+  rootDir: backend
+
+version: "1"

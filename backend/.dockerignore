@@ -1,0 +1,8 @@
+# Maven noise
+.settings/
+# VCS
+.git
+.gitignore
+# IDEs
+.idea/
+*.iml
