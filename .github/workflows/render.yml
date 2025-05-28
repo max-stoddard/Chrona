@@ -1,0 +1,26 @@
+# .github/workflows/deploy.yml
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Trigger Render deploy
+      uses: JohnBeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID_FRONT }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
+
+  deploy-backend:
+    runs-on: ubuntu-latest
+    needs: deploy-frontend
+    steps:
+    - uses: actions/checkout@v4
+    - name: Trigger Render deploy
+      uses: JohnBeynon/render-deploy-action@v0.0.8
+      with:
+        service-id: ${{ secrets.RENDER_SERVICE_ID_BACK }}
+        api-key: ${{ secrets.RENDER_API_KEY }}
