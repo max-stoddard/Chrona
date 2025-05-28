@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -23,5 +26,5 @@ jobs:
     - name: Build Docker image
       run: |
         cd backend
-        ./mvnw -DskipTests package
-        docker build -t ${{ secrets.DOCKER_REPO }}/study-backend:${{ github.sha }} .
+        ./mvnw -B package -DskipTests
+        docker build -t chrona-backend:${{ github.sha }} .
