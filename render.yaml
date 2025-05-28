@@ -20,7 +20,7 @@ services:
   repo: https://github.com/max-stoddard/Chrona
   plan: free
   region: frankfurt
-  dockerContext: backend
+  dockerContext: .
   dockerfilePath: ./Dockerfile
   autoDeployTrigger: commit
   rootDir: backend
