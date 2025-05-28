@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 // ---------------------------
 // Type Definitions
@@ -63,7 +63,7 @@ const SessionTable: React.FC<{ sessions: Session[] }> = ({ sessions }) => (
 // ---------------------------
 const Dashboard: React.FC = () => {
   const examProgressPercent = 75; // TODO: Replace with real data
-  const navigate = useNavigate();
+
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
