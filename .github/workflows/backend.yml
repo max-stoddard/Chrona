@@ -1,4 +1,4 @@
-name: Back-end CI
+name: Back-end CI & Image
 
 on:
   push:
@@ -8,21 +8,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+    
     steps:
     - uses: actions/checkout@v4
+
+    # Step 1: JDK with cache
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         distribution: temurin
         java-version: '17'
         cache: maven
+    
+    # Step 2: Build, test, create JAR
     - name: Build & unit-test
       run: |
         cd backend
-        ./mvnw -B verify
+        ./mvnw -B verify      # tests
+        ./mvnw -B package -DskipTests
+    
+    # Step 3: Build Docker image
     - name: Build Docker image
       run: |
         cd backend
