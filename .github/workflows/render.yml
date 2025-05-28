@@ -1,7 +1,9 @@
-# .github/workflows/deploy.yml
+name: Render CD
+
 on:
   push:
     branches: [main]
+    paths: [.github/workflows/render.yml]
 
 jobs:
   deploy-frontend:
