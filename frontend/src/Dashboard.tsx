@@ -78,7 +78,8 @@ const Dashboard: React.FC = () => {
             {[
                 {label: "Dashboard", path: "/"},
                 {label: "Schedule", path: "/revision-schedule"},
-                {label: "Exams", path: "/exams"}
+                {label: "Exams", path: "/exams"},
+                {label: "Settings", path: "/settings"}
             ].map(({label, path}) => (
               <NavLink
                 key={label}

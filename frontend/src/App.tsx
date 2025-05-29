@@ -8,6 +8,7 @@ import SessionFeedback from "./SessionFeedback";
 import SpecificSessionFeedback from "./SpecificSessionFeedback";
 import RevisionSchedule from "./RevisionSchedule";
 import Availability from "./Availability";
+import Settings from "./Settings";
 
 const App = () => (
 <Routes>
@@ -20,6 +21,7 @@ const App = () => (
   <Route path="/session-feedback" element={<SessionFeedback />} />
   <Route path="/session-feedback/:id" element={<SpecificSessionFeedback />} />
   <Route path="/revision-schedule" element={<RevisionSchedule />} />
+  <Route path="/settings" element={<Settings />} />
 </Routes>
 );
 
