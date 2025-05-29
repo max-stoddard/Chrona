@@ -142,9 +142,14 @@ const Dashboard: React.FC = () => {
         <section className="mb-6">
           <h2 className="text-lg font-semibold mb-2">Quick Actions</h2>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded shadow">Give Feedback</button>
+            <button className="bg-blue-500 text-white px-4 py-2 rounded shadow">Session Feedback</button>
             <button className="bg-gray-200 text-black px-4 py-2 rounded shadow">Missed a session?</button>
-            <button className="bg-gray-200 text-black px-4 py-2 rounded shadow">Add Availability</button>
+            <NavLink 
+              to="/add-availability"
+              className="bg-gray-200 text-black px-4 py-2 rounded shadow hover:bg-gray-300"
+            >
+              Add Availability
+            </NavLink>
           </div>
         </section>
 
