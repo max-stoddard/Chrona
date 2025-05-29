@@ -36,15 +36,21 @@ const AddAvailability: React.FC = () => {
     e.preventDefault();
     // TODO: Handle the form submission
     console.log({ day, startTime, endTime });
-    // Navigate back to dashboard after saving
-    navigate('/');
+    // Navigate back to availability page after saving
+    navigate('/availability');
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       <header className="bg-white shadow rounded-lg mb-6">
-        <div className="px-6 py-4">
+        <div className="px-6 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-semibold">Add Availability</h1>
+          <button
+            onClick={() => navigate('/availability')}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            Back to Availability
+          </button>
         </div>
       </header>
 

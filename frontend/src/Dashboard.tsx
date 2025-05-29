@@ -77,6 +77,7 @@ const Dashboard: React.FC = () => {
           <nav className="space-x-4 text-sm font-medium">
             {[
                 {label: "Dashboard", path: "/"},
+                {label: "Schedule", path: "/revision-schedule"},
                 {label: "Exams", path: "/exams"}
             ].map(({label, path}) => (
               <NavLink
@@ -152,10 +153,10 @@ const Dashboard: React.FC = () => {
             </NavLink>
             <button className="bg-gray-200 text-black px-4 py-2 rounded shadow">Missed a session?</button>
             <NavLink 
-              to="/add-availability"
+              to="/availability"
               className="bg-gray-200 text-black px-4 py-2 rounded shadow hover:bg-gray-300"
             >
-              Add Availability
+              Availability
             </NavLink>
           </div>
         </section>
