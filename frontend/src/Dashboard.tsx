@@ -78,6 +78,7 @@ const Dashboard: React.FC = () => {
             {[
                 {label: "Dashboard", path: "/"},
                 {label: "Schedule", path: "/revision-schedule"},
+                {label: "Progress", path: "/progress"},
                 {label: "Exams", path: "/exams"},
                 {label: "Settings", path: "/settings"}
             ].map(({label, path}) => (
