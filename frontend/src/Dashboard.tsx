@@ -109,7 +109,7 @@ const Dashboard: React.FC = () => {
 
       {/* Body */}
       <main className="bg-white shadow rounded-lg p-6 mb-6">
-        <h1 className="text-2xl font-semibold mb-4">Welcome back, Jason!</h1>
+        <h1 className="text-2xl font-semibold mb-4">Welcome back, Sarah!</h1>
 
         {/* Upcoming Sessions */}
         <section className="mb-6">
