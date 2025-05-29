@@ -108,8 +108,9 @@
   display: grid;
   grid-template-columns: 80px repeat(7, 1fr);
   min-width: 1000px;
-  border: 1px solid #e5e7eb;
-  background: white;
+  border: 1px solid rgb(31, 41, 55);
+  background: rgb(17, 24, 39);
+  color: white;
 }
 
 .time-column {
@@ -118,11 +119,11 @@
 }
 
 .time-slot {
-  height: 60px;
-  padding: 0.5rem;
+  height: 40px;
+  padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
-  border-bottom: 1px solid #e5e7eb;
+  color: rgb(209, 213, 219);
+  border-bottom: 1px solid rgb(31, 41, 55);
   display: flex;
   align-items: start;
 }
@@ -135,22 +136,23 @@
 .day-header {
   padding: 0.5rem;
   text-align: center;
-  border-bottom: 1px solid #e5e7eb;
-  background: #f3f4f6;
+  border-bottom: 1px solid rgb(31, 41, 55);
+  background: rgb(31, 41, 55);
 }
 
 .day-name {
   font-weight: 600;
+  color: white;
 }
 
 .date {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: rgb(156, 163, 175);
 }
 
 .sessions-container {
   position: relative;
-  height: calc(13 * 60px); /* 13 hours * 60px per hour */
+  height: calc(13 * 40px); /* 13 hours * 40px per hour */
 }
 
 .session-block {

@@ -63,8 +63,8 @@ const DayColumn: React.FC<{
         {sessions.map((session, idx) => {
           const startHour = parseInt(session.start.split(':')[0]);
           const endHour = parseInt(session.end.split(':')[0]);
-          const top = (startHour - 8) * 60; // Relative to 8 AM
-          const height = (endHour - startHour) * 60;
+          const top = (startHour - 8) * 40; // Relative to 8 AM
+          const height = (endHour - startHour) * 40;
           
           return (
             <div
