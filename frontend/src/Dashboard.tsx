@@ -110,7 +110,9 @@ const Dashboard: React.FC = () => {
 
         {/* Upcoming Sessions */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Upcoming Revision Sessions</h2>
+          <NavLink to="/revision-schedule" className="inline-block hover:text-blue-600">
+            <h2 className="text-lg font-semibold mb-2">Upcoming Revision Sessions</h2>
+          </NavLink>
           <SessionTable sessions={upcomingSessions} />
         </section>
 

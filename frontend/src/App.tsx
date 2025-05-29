@@ -4,6 +4,7 @@ import Exams from "./Exams";
 import AddAvailability from "./AddAvailability";
 import SessionFeedback from "./SessionFeedback";
 import SpecificSessionFeedback from "./SpecificSessionFeedback";
+import RevisionSchedule from "./RevisionSchedule";
 
 const App = () => (
 <Routes>
@@ -12,6 +13,7 @@ const App = () => (
   <Route path="/add-availability" element={<AddAvailability />}/>
   <Route path="/session-feedback" element={<SessionFeedback />} />
   <Route path="/session-feedback/:id" element={<SpecificSessionFeedback />} />
+  <Route path="/revision-schedule" element={<RevisionSchedule />} />
 </Routes>
 );
 
