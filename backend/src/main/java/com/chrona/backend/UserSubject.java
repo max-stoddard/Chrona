@@ -6,7 +6,9 @@ import io.micrometer.common.lang.NonNull;
 
 public class UserSubject {
 
+    @NonNull
     private UUID subject_id;
+    @NonNull
     private UUID user_id;
     
     @NonNull
