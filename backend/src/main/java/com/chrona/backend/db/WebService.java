@@ -5,17 +5,16 @@ import java.util.*;
 
 @Service
 class WebService<T> {
-
     @Autowired
     private Dao<T> table_dao;
 
 
-    public void WebService(Dao<T> table_Dao) {
-        this.table_dao = table_Dao;
+    public WebService(Dao<T> tableDao) {
+        this.table_dao = tableDao;
     }
 
-    public List<T> getAll() {
-        return table_dao.selectAll();
+    public List<T> getSome(int count) {
+        return table_dao.selectSome(count);
     }
 
     public Boolean insert(T entity) {

@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface Dao<T> {
     public Optional<T> select(UUID id);
     
-    public List<T> selectAll();
+    public List<T> selectSome(int num);
 
     public boolean insert(T entity);
 

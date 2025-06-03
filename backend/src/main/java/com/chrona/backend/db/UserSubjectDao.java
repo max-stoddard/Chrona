@@ -17,8 +17,8 @@ import java.util.UUID;
  */
 @Repository
 public class UserSubjectDao implements Dao<UserSubject> {
-
-    private final JdbcTemplate jdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * Maps a single row of <code>user_subjects</code> to a {@link UserSubject} aggregate.
@@ -29,17 +29,17 @@ public class UserSubjectDao implements Dao<UserSubject> {
             rs.getString("subject_name")
     );
 
-    @Autowired
-    public UserSubjectDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     /**
      * Return a single {@link UserSubject} by primary key.
      */
     @Override
     public Optional<UserSubject> select(UUID id) {
-        final String sql = "SELECT subject_id, user_id, subject_name FROM user_subjects WHERE subject_id = ?";
+        final String sql = 
+"""
+SELECT subject_id, user_id, subject_name
+FROM user_subjects
+WHERE subject_id = ?
+""";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, ROW_MAPPER, id));
         } catch (EmptyResultDataAccessException ex) {
@@ -51,9 +51,14 @@ public class UserSubjectDao implements Dao<UserSubject> {
      * Return all rows in <code>user_subjects</code>.
      */
     @Override
-    public List<UserSubject> selectAll() {
-        final String sql = "SELECT subject_id, user_id, subject_name FROM user_subjects";
-        return jdbcTemplate.query(sql, ROW_MAPPER);
+    public List<UserSubject> selectSome(int count) {
+        final String sql = 
+"""
+SELECT subject_id, user_id, subject_name
+FROM user_subjects
+LIMIT ?
+""";
+        return jdbcTemplate.query(sql, ROW_MAPPER, count);
     }
 
     /**

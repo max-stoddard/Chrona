@@ -10,11 +10,15 @@ import java.util.*;
 @RequestMapping("/api/usersubjects")
 public class UserSubjectController {
 
-    private WebService<UserSubject> service;
+    private final WebService<UserSubject> service;
+
+    public UserSubjectController(WebService<UserSubject> service) {
+        this.service = service;
+    }
 
     @GetMapping
-    public List<UserSubject> getAllSubjects() {
-        return service.getAll();
+    public List<UserSubject> getSomeSubjects(int count) {
+        return service.getSome(count);
     }
 
     @GetMapping("/{id}")
