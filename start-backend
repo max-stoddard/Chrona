@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd backend || exit 1
+echo "Starting Spring Boot backend..."
+mvn spring-boot:run

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd frontend || exit 1
+echo "Starting React frontend..."
+npm install
+npm run dev
