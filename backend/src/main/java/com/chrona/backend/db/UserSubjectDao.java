@@ -67,10 +67,10 @@ public class UserSubjectDao implements Dao<UserSubject> {
                 ON CONFLICT (subject_id) DO UPDATE
                 SET user_id      = EXCLUDED.user_id,
                     subject_name = EXCLUDED.subject_name""";
-        jdbcTemplate.update(sql,
+        return jdbcTemplate.update(sql,
                 entity.getSubjectId(),
                 entity.getUserId(),
-                entity.getSubjectName());
+                entity.getSubjectName()) > 0;
     }
 
     /**
