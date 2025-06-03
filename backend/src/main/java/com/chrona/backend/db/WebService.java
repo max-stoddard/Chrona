@@ -18,7 +18,7 @@ class WebService<T> {
         return table_dao.selectAll();
     }
 
-    public Boolean add(T entity) {
+    public Boolean insert(T entity) {
         return table_dao.insert(entity);
     }
 
