@@ -1,8 +1,8 @@
 package com.chrona.backend;
 import java.util.List;
+import java.util.UUID;
+import java.util.Optional;
 
-public interface SubjectDao {
-
-
-    public List<Subject> getAllSubjects();
+public interface Dao<T> {
+    public List<T> getAll();
 }
