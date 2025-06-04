@@ -1,0 +1,9 @@
+:root {
+  /* Color variables */
+  --color-bg-primary: #ffffff;
+  --color-border: #DBE0E5;
+  --color-text-primary: #121417;
+  --color-text-secondary: #61758A;
+  --color-button-bg: #DDEEFF;
+  --color-text-button: #000000;
+}
