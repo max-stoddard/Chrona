@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom"
-import Dashboard from "./Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Exams from "./Exams";
 import AddExam from "./AddExam";
 import ExamDetails from "./ExamDetails";
@@ -9,11 +9,15 @@ import SpecificSessionFeedback from "./SpecificSessionFeedback";
 import RevisionSchedule from "./RevisionSchedule";
 import Availability from "./Availability";
 import Settings from "./Settings";
+import SubjectsPage from "./pages/SubjectsPage.tsx";
+import AddSubjectPage from './pages/AddSubjectPage';
 import ProgressOverview from "./ProgressOverview";
 
 const App = () => (
 <Routes>
   <Route path="/" element={<Dashboard />} />
+  <Route path="/subjects" element={<SubjectsPage />} />
+  <Route path="/add-subject" element={<AddSubjectPage />} />
   <Route path="/exams" element={<Exams />}/>
   <Route path="/exams/:id" element={<ExamDetails />}/>
   <Route path="/add-exam" element={<AddExam />}/>
