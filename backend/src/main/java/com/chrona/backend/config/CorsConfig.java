@@ -16,6 +16,8 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(
             List.of(
+                "http://localhost:*",
+                "http://localhost:8080",
                 "http://localhost:5174",
                 "https://chrona-al3o.onrender.com",
                 "https://*.onrender.com"
