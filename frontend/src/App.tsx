@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import Dashboard from "./pages/Dashboard";
-import SubjectsPage from "./pages/SubjectsPage";
-import AddSubjectPage from './pages/AddSubjectPage';
+import SubjectsPage from "./pages/Subjects";
+import AddSubjectPage from './pages/AddSubject';
 
 const App = () => (
 <Routes>
