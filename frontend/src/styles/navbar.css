@@ -79,13 +79,12 @@
   }
   
   .navbar-link {
-    font-family: "Manrope-Medium", Helvetica, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: #0c141c;
-    line-height: 21px;
-    text-decoration: none;
-  }
+  font-family: "Manrope-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0c141c;
+  text-decoration: none;
+}
   
   .navbar-avatar {
     background-position: center;
