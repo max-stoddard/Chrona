@@ -50,10 +50,33 @@ export default function SubjectsPage() {
         setLoading(false);
       }
     };
-
     init();
   }, []);
 
+    const deletePage = async (subject_id : String) => {
+
+      try {
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError || !user)  throw authError;
+
+        
+
+        const api = import.meta.env.VITE_API_BASE_URL as string;
+        const res = await fetch(`${api}/api/users/${user.id}/subjects/${subject_id}`, {
+          method: 'DELETE',
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+
+        setSubjects(subjects.filter((s) => s.subject_id !== subject_id));
+    } catch (err) {
+      console.error("failed to delete subject", err);
+    }
+  };
   return (
     <div className="subjects-page">
       <Navbar />
@@ -71,7 +94,7 @@ export default function SubjectsPage() {
         ) : (
           <div className="grid">
             {subjects.map((s) => (
-              <SubjectCard key={s.subject_id} name={s.subject_name} onView={() => navigate(`/subjects/${s.subject_id}`)} />
+              <SubjectCard key={s.subject_id} name={s.subject_name} onView={() => navigate(`/subjects/${s.subject_id}`)} onDelete={()=>deletePage(s.subject_id)} />
             ))}
           </div>
         )}
