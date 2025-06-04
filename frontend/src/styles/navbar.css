@@ -23,21 +23,9 @@
   }
   
   .navbar-logo {
-    height: 32px;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 33px;
-  }
-  
-  .navbar-div-wrapper {
-    align-items: flex-start;
-    display: inline-flex;
-    flex-direction: column;
-    left: 33px;
-    position: absolute;
-    top: 4px;
-  }
+  height: 32px;
+  width: 32px;
+}
   
   .navbar-text-wrapper {
     color: #0c141c;
