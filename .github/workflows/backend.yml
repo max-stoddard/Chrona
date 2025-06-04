@@ -18,7 +18,12 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-    
+      JDBC_DATABASE_URL: ${{ secrets.JDBC_DATABASE_URL }}
+      JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
+      JDBC_DATABASE_URL_SHARED: ${{ secrets.JDBC_DATABASE_URL_SHARED }}
+      JDBC_USERNAME_SHARED: ${{ secrets.JDBC_USERNAME_SHARED }}
+      JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
+
     steps:
     - uses: actions/checkout@v4
 
