@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -17,12 +19,15 @@ class UserSubject {
 
     @Id
     @Column("subject_id")
+    @JsonProperty("subject_id")
     private UUID subjectId;
 
     @Column("user_id")
+    @JsonProperty("user_id")
     private UUID userId;
 
     @Column("subject_name")
+    @JsonProperty("subject_name")
     private String subjectName;
 
     public UserSubject() {}
