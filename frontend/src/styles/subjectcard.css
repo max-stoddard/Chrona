@@ -46,3 +46,27 @@
 .view-details-button:hover {
   opacity: 0.9;
 }
+
+.delete-btn {
+  position: absolute;
+  top: 6px;               /* nudge from edges */
+  right: 6px;
+
+  border: none;           /* ❷ remove default chrome */
+  background: transparent;
+  padding: 0;             /* no extra box */
+
+  font-size: 1.25rem;     /* 20px – visible but subtle */
+  line-height: 1;
+  color: #666;            /* visible on white card */
+  cursor: pointer;
+
+  /* optional extras */
+  z-index: 1;             /* stay above card content */
+  user-select: none;
+}
+
+.delete-btn:hover {
+  color: #d33;            /* red on hover */
+  transform: scale(1.1);
+}
