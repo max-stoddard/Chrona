@@ -16,14 +16,15 @@ public class WebConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-      .csrf(AbstractHttpConfigurer::disable)
+      .csrf(csrf -> csrf.disable())
       .cors(cors -> cors.configurationSource(CorsConfig.corsConfigurationSource()))
-      .authorizeHttpRequests(a -> a
+      .authorizeHttpRequests(auth -> auth
           .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
           .anyRequest().permitAll()
       )
-      .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    return http.build();
+      .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    
+      return http.build();
   }
 
 }
