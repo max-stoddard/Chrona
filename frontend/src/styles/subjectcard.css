@@ -3,6 +3,7 @@
 
 /* Ensure the card itself is a flex column that fills its grid cell */
 .subject-card {
+  position: relative;
   width: 100%;
   max-width: 420px;
   display: flex;
