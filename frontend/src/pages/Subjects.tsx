@@ -7,9 +7,9 @@ import '../styles/subjectspage.css';
 import '../styles/typography.css';
 
 interface Subject {
-  subjectId: string;
-  userId: string;
-  subjectName: string;
+  subject_id: string;
+  user_id: string;
+  subject_name: string;
 }
 
 export default function SubjectsPage() {
@@ -39,7 +39,10 @@ export default function SubjectsPage() {
         const api = import.meta.env.VITE_API_BASE_URL as string;
         const res = await fetch(`${api}/api/users/${user.id}/subjects`);
         if (!res.ok) throw new Error(await res.text());
-        setSubjects(await res.json());
+
+        const data = await res.json();
+        console.log("Loaded subjects:", data);
+        setSubjects(data);
       } catch (err) {
         /* eslint-disable no-console */
         console.error('Failed to load subjects', err);
@@ -68,7 +71,7 @@ export default function SubjectsPage() {
         ) : (
           <div className="grid">
             {subjects.map((s) => (
-              <SubjectCard key={s.subjectId} name={s.subjectName} onView={() => navigate(`/subjects/${s.subjectId}`)} />
+              <SubjectCard key={s.subject_id} name={s.subject_name} onView={() => navigate(`/subjects/${s.subject_id}`)} />
             ))}
           </div>
         )}
