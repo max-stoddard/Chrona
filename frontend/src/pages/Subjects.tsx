@@ -1,62 +1,77 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar"; // ← new
-import "../styles/subjectspage.css";       // keep this
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import SubjectCard from '../components/SubjectCard';
+import supabase from '../../utils/supabase';
+import '../styles/subjectspage.css';
+import '../styles/typography.css';
+
+interface Subject {
+  subjectId: string;
+  userId: string;
+  subjectName: string;
+}
 
 export default function SubjectsPage() {
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    /**
+     * Sign‑in with service credentials and pull subjects for the user.
+     * Credentials are temporary – replace when real auth is in place.
+     */
+    const init = async () => {
+      try {
+        // 1. Authenticate (session is cached by Supabase client)
+        await supabase.auth.signOut();
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.signInWithPassword({
+          email: 'test@test.com',
+          password: 'testuser',
+        });
+        if (authError || !user) throw authError;
+
+        // 2. Call Spring‑Boot API with user ID to fetch subjects
+        const api = import.meta.env.VITE_API_BASE_URL as string;
+        const res = await fetch(`${api}/api/users/${user.id}/subjects`);
+        if (!res.ok) throw new Error(await res.text());
+        setSubjects(await res.json());
+      } catch (err) {
+        /* eslint-disable no-console */
+        console.error('Failed to load subjects', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, []);
+
   return (
     <div className="subjects-page">
-      <Navbar /> {/* ← replaces old header */}
+      <Navbar />
 
-      <div className="depth-frame-9">
-        <div className="depth-frame-10">
-          <div className="depth-frame-11">
-            <div className="depth-frame-12">
-              <div className="depth-frame-13">
-                <div className="text-wrapper-3">Subjects</div>
-              </div>
-              <div className="depth-frame-14" />
-            </div>
+      <div className="content">
+        <header className="header-row">
+          <h1 className="heading-1">Subjects</h1>
+          <Link to="/add-subject" className="add-subject button-text">
+            Add Subject
+          </Link>
+        </header>
 
-            <Link to="/add-subject" className="depth-frame-15">
-              <div className="depth-frame-16">
-                <div className="text-wrapper-4">Add Subject</div>
-              </div>
-            </Link>
+        {loading ? (
+          <p className="body-1">Loading…</p>
+        ) : (
+          <div className="grid">
+            {subjects.map((s) => (
+              <SubjectCard key={s.subjectId} name={s.subjectName} onView={() => navigate(`/subjects/${s.subjectId}`)} />
+            ))}
           </div>
-
-          {/* Subject Cards */}
-          {[{
-            name: "Mathematics",
-            exams: "Paper 1, Paper 2 , Applied"
-          }, {
-            name: "Physics",
-            exams: "Paper 1, Paper 2"
-          }, {
-            name: "Chemistry",
-            exams: "Paper 1, Paper 2 , Paper 3"
-          }].map((subject, i) => (
-            <div className="depth-frame-17" key={i}>
-              <div className="depth-frame-18">
-                <div className="depth-frame-19">
-                  <div className="depth-frame-20">
-                    <div className="depth-frame-21">
-                      <div className="text-wrapper-5">{subject.name}</div>
-                    </div>
-                    <p className="text-wrapper-7">Exams: {subject.exams}</p>
-                  </div>
-
-                  <div className="depth-frame-22">
-                    <div className="depth-frame-23">
-                      <div className="text-wrapper-6">View Details</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-
-        </div>
+        )}
       </div>
     </div>
   );
