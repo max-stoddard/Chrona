@@ -1,0 +1,54 @@
+@import './theme.css';
+
+/* Heading */
+.heading-1 {
+  color: var(--color-text-primary);
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  margin: 0;
+}
+
+/* Sub-heading */
+.heading-2 {
+  color: var(--color-text-primary);
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Body text primary */
+.body-1 {
+  color: var(--color-text-primary);
+  font-family: 'Inter-Medium', Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Body text secondary */
+.body-2 {
+  color: var(--color-text-secondary);
+  font-family: 'Inter-Regular', Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  margin: 0;
+  text-align: center;
+}
+
+/* Button text */
+.button-text {
+  color: var(--color-text-button);
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+}
