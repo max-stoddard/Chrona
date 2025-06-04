@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import supabase from '../../utils/supabase';
-import vector0 from '../assets/plusSign.png';
+import plusIcon from '../assets/plusSign.png';
 import '../styles/addsubject.css';
 
 interface Exam {
   name: string;
   date: string;        // ISO YYYY-MM-DD from `<input type="date">`
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: '' | 'Easy' | 'Medium' | 'Hard';
+  confidence?: '' | 'Not confident' | 'Somewhat confident' | 'Very confident';
 }
 
 export default function AddSubjectPage() {
@@ -23,7 +24,7 @@ export default function AddSubjectPage() {
   const addExam = () =>
     setExams((prev) => [
       ...prev,
-      { name: '', date: '', difficulty: 'Medium' as const },
+      { name: '', date: '', difficulty: '', confidence: ''},
     ]);
 
   /** helper – update a single exam                            */
@@ -84,113 +85,96 @@ export default function AddSubjectPage() {
     <div className="add-subject-page">
       <Navbar />
 
-      <div className="depth-frame-9">
-        <div className="depth-frame-10">
-          {/* Heading */}
-          <div className="depth-frame-11">
-            <div className="depth-frame-12">
-              <h1 className="text-wrapper-3">Add Subject</h1>
-            </div>
-          </div>
+      <main className="container">
+        {/* Page heading */}
+        <h1 className="heading-1 text-center">Add Subject</h1>
 
-          {/* Subject name */}
-          <div className="depth-frame-13">
-            <div className="depth-frame-14">
-              <label className="depth-frame-15">
-                <span className="text-wrapper-4">Subject Name</span>
-              </label>
-              <input
-                className="e-g-history-wrapper"
-                placeholder="e.g. History"
-                value={subjectName}
-                onChange={(e) => setSubjectName(e.target.value)}
-              />
-            </div>
-          </div>
-
-          {/* Exams label */}
-          <div className="depth-frame-16">
-            <h2 className="text-wrapper-5">Exams</h2>
-          </div>
-
-          {/* Exam rows */}
-          {exams.map((exam, idx) => (
-            <div key={idx} className="depth-frame-17">
-              <div className="overlap-wrapper">
-                <div className="overlap">
-                  <div className="overlap-group">
-                    <div className="depth-frame-18">
-                      <input
-                        className="text-wrapper-4"
-                        placeholder="Paper title"
-                        value={exam.name}
-                        onChange={(e) =>
-                          updateExam(idx, { name: e.target.value })
-                        }
-                      />
-                    </div>
-
-                    <input
-                      type="date"
-                      className="text-wrapper-6"
-                      value={exam.date}
-                      onChange={(e) =>
-                        updateExam(idx, { date: e.target.value })
-                      }
-                    />
-                  </div>
-
-                  {/* difficulty selector */}
-                  <div className="depth-frame-19">
-                    <select
-                      className="text-wrapper-7"
-                      value={exam.difficulty}
-                      onChange={(e) =>
-                        updateExam(idx, {
-                          difficulty: e.target.value as Exam['difficulty'],
-                        })
-                      }
-                    >
-                      <option>Easy</option>
-                      <option>Medium</option>
-                      <option>Hard</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          {/* Add Exam button */}
-          <div className="depth-frame-21" onClick={addExam}>
-            <div className="depth-frame-22 cursor-pointer">
-              <div className="depth-frame-23">
-                <div className="vector-wrapper">
-                  <img className="vector" alt="Add exam" src={vector0} />
-                </div>
-              </div>
-              <div className="depth-frame-23">
-                <span className="text-wrapper-9">Add Exam</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Save Subject button */}
-          <div className="depth-frame-21">
-            <button
-              disabled={saving}
-              className="depth-frame-24 cursor-pointer"
-              onClick={saveSubject}
-            >
-              <div className="depth-frame-23">
-                <span className="text-wrapper-10">
-                  {saving ? 'Saving…' : 'Save Subject'}
-                </span>
-              </div>
-            </button>
-          </div>
+        {/* Subject name */}
+        <div className="form-group">
+          <label htmlFor="subjectName" className="body-1">
+            Subject Name
+          </label>
+          <input
+            id="subjectName"
+            className="subject-input body-2"
+            placeholder="e.g. History"
+            value={subjectName}
+            onChange={(e) => setSubjectName(e.target.value)}
+          />
         </div>
-      </div>
+
+        {/* Exams section */}
+        <h2 className="heading-2 text-left exams-label">Exams</h2>
+
+        {exams.map((exam, idx) => (
+          <div key={idx} className="exam-row">
+            <input
+              className="exam-title body-2"
+              placeholder="Paper title"
+              value={exam.name}
+              onChange={(e) => updateExam(idx, { name: e.target.value })}
+            />
+
+            <input
+              type="date"
+              className="exam-date body-2"
+              value={exam.date}
+              onChange={(e) => updateExam(idx, { date: e.target.value })}
+            />
+
+            <select
+              className="exam-difficulty body-2"
+              value={exam.difficulty}
+              onChange={(e) =>
+                updateExam(idx, {
+                  difficulty: e.target.value as Exam["difficulty"],
+                })
+              }
+            >
+              <option value="" disabled>
+                Exam difficulty
+              </option>
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+
+            <select
+                className="exam-confidence body-2"
+                value={exam.confidence}
+                onChange={(e) =>
+                    updateExam(idx, {
+                    confidence: e.target.value as Exam['confidence'],
+                    })
+                }
+                >
+                <option value="" disabled>
+                  Confidence level
+                </option>
+                <option>Not confident</option>
+                <option>Somewhat confident</option>
+                <option>Very confident</option>
+              </select>
+
+          </div>
+        ))}
+
+        {/* Add Exam */}
+        <button type="button" className="add-exam-btn" onClick={addExam}>
+          <img src={plusIcon} alt="Add" className="icon-plus" />
+          <span className="button-text">Add Exam</span>
+        </button>
+
+        {/* Save Subject */}
+        <button
+          type="button"
+          className="save-btn"
+          disabled={saving}
+          onClick={saveSubject}
+        >
+          <span className="button-text">{saving ? "Saving…" : "Save Subject"}</span>
+        </button>
+      </main>
     </div>
   );
 }
