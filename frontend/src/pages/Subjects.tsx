@@ -63,7 +63,6 @@ export default function SubjectsPage() {
 
         if (authError || !user)  throw authError;
 
-        const userID = user.id;
         
 
         const api = import.meta.env.VITE_API_BASE_URL as string;
