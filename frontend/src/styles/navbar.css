@@ -1,23 +1,21 @@
-.navbar-depth-frame-2 {
+@import './theme.css';
+@import './typography.css';
+
+.navbar {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* center items vertically */
-  border-bottom: 1px solid #e5e8eb;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
   padding: 12px 40px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.navbar-depth-frame-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.navbar-depth-frame-3 {
+.navbar-brand {
   display: flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
 }
 
 .navbar-logo {
@@ -25,32 +23,26 @@
   width: 32px;
 }
 
-.navbar-text-wrapper {
-  color: #0c141c;
-  font-family: "Public Sans-Bold", Helvetica;
+.navbar-text {
+  color: var(--color-text-primary);
+  font-family: 'Public Sans-Bold', Helvetica, sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 23px;
   text-decoration: none;
 }
 
-.navbar-depth-frame-4 {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-}
-
-.navbar-depth-frame-5 {
+.navbar-links {
   display: flex;
   align-items: center;
   gap: 32px;
 }
 
 .navbar-link {
-  font-family: "Manrope-Medium", Helvetica;
+  font-family: 'Manrope-Medium', Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #0c141c;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
