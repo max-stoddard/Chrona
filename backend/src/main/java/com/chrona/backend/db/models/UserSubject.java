@@ -1,4 +1,4 @@
-package com.chrona.backend.db;
+package com.chrona.backend.db.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -12,6 +12,7 @@ import java.util.UUID;
  * Maps to the <code>user_subjects</code> table.
  */
 @Table("user_subjects")
+public
 class UserSubject {
 
     @Id
