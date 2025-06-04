@@ -1,0 +1,47 @@
+@import './theme.css';
+@import './typography.css';
+
+/* Ensure the card itself is a flex column that fills its grid cell */
+.subject-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;                
+  padding: 28px 24px;          
+  box-sizing: border-box;
+  gap: 16px;                   
+}
+
+/* Title wraps naturally */
+.subject-title {
+  margin: 0;
+  text-align: center;
+  word-break: break-word;
+  min-height: 26px;
+  display: flex;
+  align-items: center;     
+  justify-content: center;
+}
+
+/* Exams line sits just below the title with a little breathing room */
+.exams-line {
+  margin: 0;
+  text-align: center;
+  min-height: 24px;         
+}
+
+/* Button anchors to the bottom with auto margin */
+.view-details-button {
+  background-color: var(--color-button-bg);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: auto;        
+  align-self: center;         
+}
+
+.view-details-button:hover {
+  opacity: 0.9;
+}
