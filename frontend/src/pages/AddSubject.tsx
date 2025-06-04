@@ -17,6 +17,8 @@ export default function AddSubjectPage() {
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
+  const subjectId = crypto.randomUUID();
+
   /** helper – add an empty exam row                           */
   const addExam = () =>
     setExams((prev) => [
@@ -43,8 +45,12 @@ export default function AddSubjectPage() {
       } = await supabase.auth.getUser();
       if (error || !user) throw error ?? new Error('No user session');
 
+      const userID = user.id;
       // build payload
-      const payload = { subjectName, exams };
+      const payload = { subject_id:subjectId, user_id:userID,
+       name:subjectName.trim() };
+
+      
 
       const api = import.meta.env.VITE_API_BASE_URL as string;
       const res = await fetch(
