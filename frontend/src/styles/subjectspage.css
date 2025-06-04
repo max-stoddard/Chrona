@@ -1,0 +1,401 @@
+.subjects-page {
+    align-items: flex-start;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame {
+    align-items: flex-start;
+    align-self: stretch;
+    background-color: #ffffff;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    min-height: 800px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .div {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-2 {
+    align-items: center;
+    align-self: stretch;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-color: #e5e8eb;
+    display: flex;
+    flex: 0 0 auto;
+    justify-content: space-between;
+    padding: 12px 40px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-wrapper {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 16px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-3 {
+    height: 32px;
+    position: relative;
+    width: 112px;
+  }
+  
+  .subjects-page .adobe-express-file {
+    height: 32px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 33px;
+  }
+  
+  .subjects-page .div-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    left: 33px;
+    position: absolute;
+    top: 4px;
+  }
+  
+  .subjects-page .text-wrapper {
+    align-self: stretch;
+    color: #0c141c;
+    font-family: "Public Sans-Bold", Helvetica;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 23px;
+    margin-top: -1.00px;
+    position: relative;
+    white-space: nowrap;
+  }
+  
+  .subjects-page .depth-frame-4 {
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    flex-grow: 1;
+    gap: 32px;
+    justify-content: flex-end;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-5 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 36px;
+    height: 40px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-6 {
+    height: 21px;
+    position: relative;
+    width: 60px;
+  }
+  
+  .subjects-page .depth-frame-7 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .subjects-page .text-wrapper-2 {
+    align-self: stretch;
+    color: #0c141c;
+    font-family: "Manrope-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-top: -1.00px;
+    position: relative;
+    white-space: nowrap;
+  }
+  
+  .subjects-page .depth-frame-8 {
+    background-image: url(./depth-4-frame-2.png);
+    background-position: 50% 50%;
+    background-size: cover;
+    border-radius: 20px;
+    height: 40px;
+    position: relative;
+    width: 40px;
+  }
+  
+  .subjects-page .depth-frame-9 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    height: 867px;
+    justify-content: center;
+    padding: 20px 160px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-10 {
+    align-items: flex-start;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    flex-grow: 1;
+    max-width: 960px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-11 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 12px 12px;
+    justify-content: space-between;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-12 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 288px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-13 {
+    align-items: flex-start;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+    width: 300px;
+  }
+  
+  .subjects-page .text-wrapper-3 {
+    align-self: stretch;
+    color: #0c141c;
+    font-family: "Manrope-Bold", Helvetica;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 40px;
+    margin-top: -1.00px;
+    position: relative;
+    padding-left: 150px;
+    text-align: center;       /* NEW */
+    width: 100%;              /* NEW – lets it stretch full row */
+  }
+  
+  .subjects-page .depth-frame-14 {
+    height: 21px;
+    position: relative;
+    width: 301px;
+  }
+  
+  .subjects-page .depth-frame-15 {
+    align-items: center;
+    background-color: #ddeeff;
+    border-radius: 8px;
+    display: flex;
+    height: 52px;
+    justify-content: center;
+    max-width: 480px;
+    overflow: hidden;
+    padding: 0px 16px;
+    position: relative;
+    width: 168px;
+  }
+  
+  .subjects-page .depth-frame-16 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin-left: -28.00px;
+    margin-right: -16.00px;
+    position: relative;
+  }
+  
+  .subjects-page .text-wrapper-4 {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    color: #0c141c;
+    display: -webkit-box;
+    font-family: "Manrope-Medium", Helvetica;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-top: -1.00px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 192px;
+  }
+  
+  .subjects-page .depth-frame-17 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    padding: 16px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-18 {
+    align-items: flex-start;
+    align-self: stretch;
+    border-radius: 8px;
+    display: flex;
+    flex: 0 0 auto;
+    gap: 16px;
+    justify-content: flex-start;
+    /* padding-left: -px; */
+    padding-right: 300px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-19 {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 171px;
+    position: relative;
+    width: 608px;
+  }
+  
+  .subjects-page .depth-frame-20 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .depth-frame-21 {
+    align-items: flex-start;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .subjects-page .text-wrapper-5 {
+    align-self: stretch;
+    color: #0c141c;
+    font-family: "Manrope-Bold", Helvetica;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -1.00px;
+    position: relative;
+  }
+  
+  .subjects-page .p {
+    align-self: stretch;
+    color: #49729b;
+    font-family: "Manrope-Regular", Helvetica;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-top: -1.00px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-22 {
+    align-items: center;
+    background-color: #e8edf5;
+    border-radius: 8px;
+    display: inline-flex;
+    height: 32px;
+    justify-content: center;
+    max-width: 480px;
+    min-width: 84px;
+    overflow: hidden;
+    padding: 0px 16px;
+    position: relative;
+  }
+  
+  .subjects-page .depth-frame-23 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .subjects-page .text-wrapper-6 {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    color: #0c141c;
+    display: -webkit-box;
+    font-family: "Manrope-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 21px;
+    margin-top: -1.00px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .subjects-page .text-wrapper-7 {
+    color: #49729b;
+    font-family: "Manrope-Regular", Helvetica;
+    font-size: 16px;
+    font-weight: 400;
+    height: 21px;
+    letter-spacing: 0;
+    line-height: 21px;
+    position: relative;
+    white-space: nowrap;
+    width: 608px;
+  }
+  
+  .subjects-page .depth-frame-24 {
+    align-self: stretch;
+    height: 21px;
+    position: relative;
+    width: 100%;
+  }
+  
