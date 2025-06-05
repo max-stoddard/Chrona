@@ -16,7 +16,7 @@ interface Props {
 }
 
 const SessionCard: React.FC<Props> = ({ subject, exam, examDate, onFinish, editable, onEdit }) => {
-  const { formatted, running, start, pause } = useStopwatch(false);
+  const { formatted, running, start, pause } = useStopwatch(true);
 
   return (
     <Card className="session-card">
