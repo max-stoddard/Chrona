@@ -10,6 +10,7 @@ export interface Exam {
   exam_name: string;
   exam_date: string; // ISO yyyy-mm-dd
   exam_difficulty: number;
+  subject_name?: string;
 }
 
 export interface Session {

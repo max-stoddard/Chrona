@@ -40,3 +40,14 @@
   height: 18px;
   object-fit: cover;
 }
+
+.card-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+  
+.card-row > .card {
+  flex: 1 1 0;
+  min-width: 280px;
+}

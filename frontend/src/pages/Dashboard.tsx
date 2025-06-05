@@ -7,7 +7,7 @@ import Card from '../components/Card';
 
 import { getSessions } from '../api/session';
 import { getSubject, getSubjects } from '../api/subjects';
-import { getUserExams } from '../api/exams';
+import { getUserExams, getUpcomingExams } from '../api/exams';
 import { useEffect, useState } from 'react';
 import { type Subject, type Exam, type Session } from '../types/types';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [exam, setExam]           = useState<Exam | null>(null);
   const [sessions, setSessions]   = useState<Session[]>([]);
   const [loading, setLoading]     = useState(true);
+  const [upcoming, setUpcoming] = useState<Exam[]>([]);
 
   // ───────────────────────── LOAD EVERYTHING ─────────────────────────
   useEffect(() => {
@@ -35,6 +36,8 @@ export default function Dashboard() {
       try {
         // ── 1. Get all exams for this user
         const allExams = await getUserExams(uid);
+        const soonest = await getUpcomingExams(uid);
+
         console.log(allExams);
         if (cancelled) return;
 
@@ -66,6 +69,7 @@ export default function Dashboard() {
         const allSessions = await getSessions(uid);
         if (cancelled) return;
         setSessions(allSessions);
+        setUpcoming(soonest);
       } catch (err) {
         console.error(err);
       } finally {
@@ -168,35 +172,55 @@ export default function Dashboard() {
         </Card>
 
         {/* Recent sessions */}
-        {sessions.length > 0 && (
-          <Card>
-            <h2 className="heading-2">Recent sessions</h2>
-            <ul className="body-2" style={{ listStyle: 'none', padding: 0 }}>
-              {sessions.slice(0, 5).map((s) => {
-                const totalSeconds = s.seconds_spent ?? 0;
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
+        <div className="card-row">
+            {sessions.length > 0 && (
+            <Card>
+                <h2 className="heading-2">Recent sessions</h2>
+                <ul className="body-2" style={{ listStyle: 'none', padding: 0 }}>
+                {sessions.slice(0, 5).map((s) => {
+                    const totalSeconds = s.seconds_spent ?? 0;
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
 
-                // Build a human‐readable string
-                let duration = '';
-                if (hours > 0) {
-                  duration += `${hours}h `;
-                }
-                if (minutes > 0 || hours > 0) {
-                  duration += `${minutes}m `;
-                }
-                duration += `${seconds}s`;
+                    // Build a human‐readable string
+                    let duration = '';
+                    if (hours > 0) {
+                    duration += `${hours}h `;
+                    }
+                    if (minutes > 0 || hours > 0) {
+                    duration += `${minutes}m `;
+                    }
+                    duration += `${seconds}s`;
 
-                return (
-                  <li key={s.session_id}>
-                    {new Date(s.started_at).toLocaleDateString()} — {duration}
-                  </li>
-                );
-              })}
-            </ul>
-          </Card>
-        )}
+                    return (
+                    <li key={s.session_id}>
+                        {new Date(s.started_at).toLocaleDateString()} — {duration}
+                    </li>
+                    );
+                })}
+                </ul>
+            </Card>
+            )}
+
+            {upcoming.length > 0 && (
+            <Card>
+                <h2 className="heading-2">Upcoming exams</h2>
+                <ul className="body-2" style={{ listStyle: 'none', padding: 0 }}>
+                {upcoming.map((e) => (
+                    <li key={e.exam_id} style={{ marginBottom: 6 }}>
+                    {new Date(e.exam_date).toLocaleDateString()}
+                    {' — '}
+                    <strong>{e.exam_name}</strong>
+                    {' ('}{e.subject_name ?? '—'}{')'}
+                    </li>
+                ))}
+                </ul>
+            </Card>
+            )}
+        </div>
+
+
       </div>
     </div>
   );
