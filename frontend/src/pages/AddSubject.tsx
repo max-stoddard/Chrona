@@ -20,20 +20,16 @@ export default function AddSubjectPage() {
 
   const subjectId = crypto.randomUUID();
 
-  /** helper – add an empty exam row                           */
   const addExam = () =>
-    setExams((prev) => [
-      ...prev,
-      { name: '', date: '', difficulty: '', confidence: ''},
-    ]);
+    setExams((prev) => [...prev, { name: '', date: '', difficulty: '', confidence: ''}]);
 
-  /** helper – update a single exam                            */
   const updateExam = (idx: number, patch: Partial<Exam>) =>
-    setExams((prev) =>
-      prev.map((e, i) => (i === idx ? { ...e, ...patch } : e)),
-    );
+    setExams((prev) => prev.map((e, i) => (i === idx ? { ...e, ...patch } : e)));
 
-  /** POST subject + exams to the Spring Boot API              */
+  const removeExam = (idx: number) =>
+    setExams(prev => prev.filter((_, i) => i !== idx)); 
+
+  /** POST subject + exams to the Spring Boot API */
   const saveSubject = async () => {
     if (!subjectName.trim()) return alert('Please enter a subject name.');
 
@@ -98,10 +94,7 @@ export default function AddSubjectPage() {
   };
 
   /* Add one empty exam row automatically so the UI isn’t blank */
-  useEffect(() => {
-    if (exams.length === 0) addExam();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { if (exams.length === 0) addExam(); }, []);
 
   return (
     <div className="add-subject-page">
@@ -130,6 +123,7 @@ export default function AddSubjectPage() {
 
         {exams.map((exam, idx) => (
           <div key={idx} className="exam-row">
+            {/* Name */}
             <input
               className="exam-title body-2"
               placeholder="Paper title"
@@ -137,6 +131,7 @@ export default function AddSubjectPage() {
               onChange={(e) => updateExam(idx, { name: e.target.value })}
             />
 
+            {/* Date */}
             <input
               type="date"
               className="exam-date body-2"
@@ -144,6 +139,7 @@ export default function AddSubjectPage() {
               onChange={(e) => updateExam(idx, { date: e.target.value })}
             />
 
+            {/* Difficulty */}
             <select
               className="exam-difficulty body-2"
               value={exam.difficulty}
@@ -160,23 +156,35 @@ export default function AddSubjectPage() {
               <option>Medium</option>
               <option>Hard</option>
             </select>
-
+            
+            {/* Confidence */}
             <select
-                className="exam-confidence body-2"
-                value={exam.confidence}
-                onChange={(e) =>
-                    updateExam(idx, {
-                    confidence: e.target.value as Exam['confidence'],
-                    })
-                }
-                >
-                <option value="" disabled>
-                  Confidence level
-                </option>
-                <option>Not confident</option>
-                <option>Somewhat confident</option>
-                <option>Very confident</option>
-              </select>
+              className="exam-confidence body-2"
+              value={exam.confidence}
+              onChange={(e) =>
+                  updateExam(idx, {
+                  confidence: e.target.value as Exam['confidence'],
+                  })
+              }
+              >
+              <option value="" disabled>
+                Confidence level
+              </option>
+              <option>Not confident</option>
+              <option>Somewhat confident</option>
+              <option>Very confident</option>
+            </select>
+
+            {/* Remove-row */}
+            <button
+              type="button"
+              className="remove-exam-btn"
+              onClick={() => removeExam(idx)}
+              disabled={exams.length === 1}
+              aria-label="Remove this exam"
+            >
+              x
+            </button>
 
           </div>
         ))}
