@@ -30,13 +30,13 @@ export async function getSessions(userId: string): Promise<Session[]> {
 export async function createSession(
   payload: Pick<Session, 'user_id' | 'subject_id' | 'exam_id' | 'started_at'>,
 ): Promise<string> {
-  const res = await apiRequest<{ sessionId: string }>('POST', '/api/sessions', {
+  const res = await apiRequest<{ session_id: string }>('POST', '/api/sessions', {
     user_id    : payload.user_id,
     subject_id : payload.subject_id,
     exam_id    : payload.exam_id,
     started_at : payload.started_at,
   });
-  return res.sessionId;
+  return res.session_id;
 }
 
 export async function finishSession(
