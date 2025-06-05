@@ -8,10 +8,11 @@
   max-width: 420px;
   display: flex;
   flex-direction: column;
-  height: 100%;                
+  height: auto;                
   padding: 28px 24px;          
   box-sizing: border-box;
-  gap: 16px;                   
+  gap: 16px;    
+  align-self: flex-start;               
 }
 
 /* Title wraps naturally */
@@ -69,4 +70,13 @@
 .delete-btn:hover {
   color: #d33;            /* red on hover */
   transform: scale(1.1);
+}
+
+/* gives the date text the same stripped-down look as the rest of the line */
+.exam-date {
+  padding: 0;
+  border: 0;
+  background: none !important;   /* nuke any leftover background */
+  box-shadow: none !important;
+  display: inline;
 }
