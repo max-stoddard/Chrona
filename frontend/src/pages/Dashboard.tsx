@@ -65,16 +65,7 @@ export default function Dashboard() {
         // ── 3. Fetch recent sessions, then filter by the local firstExam 
         const allSessions = await getSessions(uid);
         if (cancelled) return;
-
-        if (firstExam) {
-          const examSessions = allSessions.filter(
-            (s) => s.exam_id === firstExam.exam_id
-          );
-          setSessions(examSessions);
-        } else {
-          // If no exam, show all sessions or handle empty
-          setSessions(allSessions);
-        }
+        setSessions(allSessions);
       } catch (err) {
         console.error(err);
       } finally {
@@ -160,10 +151,10 @@ export default function Dashboard() {
         {/* Upcoming session */}
         <Card>
           <p className="heading-2">Ready for your next session?</p>
-          <p className="body-1">{subject.subject_name}</p>
-          <p className="body-1">{exam.exam_name}</p>
+          <p className="body-1">Subject: {subject.subject_name}</p>
+          <p className="body-1">Exam: {exam.exam_name}</p>
           <p className="body-2">
-            {new Date(exam.exam_date).toLocaleDateString()}
+            Exam date: {new Date(exam.exam_date).toLocaleDateString()}
           </p>
 
           <button className="button-start" onClick={startSession}>
@@ -182,12 +173,28 @@ export default function Dashboard() {
           <Card>
             <h2 className="heading-2">Recent sessions</h2>
             <ul className="body-2" style={{ listStyle: 'none', padding: 0 }}>
-              {sessions.slice(0, 5).map((s) => (
-                <li key={s.session_id}>
-                  {new Date(s.started_at).toLocaleDateString()} —{' '}
-                  {Math.round((s.seconds_spent ?? 0) / 60)} min
-                </li>
-              ))}
+              {sessions.slice(0, 5).map((s) => {
+                const totalSeconds = s.seconds_spent ?? 0;
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                // Build a human‐readable string
+                let duration = '';
+                if (hours > 0) {
+                  duration += `${hours}h `;
+                }
+                if (minutes > 0 || hours > 0) {
+                  duration += `${minutes}m `;
+                }
+                duration += `${seconds}s`;
+
+                return (
+                  <li key={s.session_id}>
+                    {new Date(s.started_at).toLocaleDateString()} — {duration}
+                  </li>
+                );
+              })}
             </ul>
           </Card>
         )}
