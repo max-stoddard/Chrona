@@ -51,6 +51,20 @@ public class SubjectExamDao {
         }
     }
 
+    public List<UserSubjectExam> selectAllByUser(UUID userId) {
+        return jdbcTemplate.query("""
+            SELECT e.exam_id,
+                e.subject_id,
+                e.exam_name,
+                e.exam_date,
+                e.exam_difficulty
+            FROM user_subject_exams e
+            JOIN user_subjects      s ON s.subject_id = e.subject_id
+            WHERE s.user_id = ?
+            ORDER BY e.exam_date DESC
+            """, ROW_MAPPER, userId);
+    }
+
     // ──────────────────────────────────────────────────────────────────────────────
     // Mutations
 
