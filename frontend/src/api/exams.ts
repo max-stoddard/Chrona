@@ -1,6 +1,6 @@
 import { type Exam } from '../types/types';
 import { apiRequest } from '../../utils/apiClient';
-
+import { getSubjects }    from './subjects';
 
 
 export async function getExams(subjectId: string): Promise<Exam[]> {
@@ -81,3 +81,24 @@ export async function deleteExam(
 ): Promise<void> {
   await apiRequest<void>('DELETE', `/api/subjects/${subjectId}/exams/${examId}`);
 }
+
+export async function getUpcomingExams(userId: string, count = 5) {
+    const [exams, subjects] = await Promise.all([
+      getUserExams(userId),
+      getSubjects(userId),
+    ]);
+  
+    const nameById = Object.fromEntries(
+      subjects.map(s => [s.subject_id, s.subject_name])
+    );
+  
+    const today = new Date().toISOString().slice(0, 10);
+  
+    return exams
+      .filter(e => e.exam_date >= today)
+      .sort((a, b) => a.exam_date.localeCompare(b.exam_date))
+      .slice(0, count)
+      .map(e => ({ ...e, subject_name: nameById[e.subject_id] ?? '—'}));
+    }
+  
+  
