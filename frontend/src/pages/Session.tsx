@@ -46,7 +46,7 @@ export default function SessionPage() {
     if (createdRef.current) return;
     createdRef.current = true;
 
-    const started_at = new Date().toISOString();          // exact timestamp
+    const started_at = new Date().toISOString();
     setStartTime(started_at);
 
     createSession({
@@ -64,8 +64,7 @@ export default function SessionPage() {
         console.error(err);
         navigate('/', { replace: true });
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, subject_id, exam_id, navigate]); // run once on mount
+  }, [userId, subject_id, exam_id, navigate]);
 
   /* Handle finish click */
   const handleFinish = async () => {
