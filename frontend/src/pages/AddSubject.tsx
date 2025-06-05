@@ -134,7 +134,7 @@ export default function AddSubjectPage() {
             {/* Date */}
             <input
               type="date"
-              className="exam-date body-2"
+              className="exam-date-add-subject body-2"
               value={exam.date}
               onChange={(e) => updateExam(idx, { date: e.target.value })}
             />
