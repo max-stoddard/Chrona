@@ -32,6 +32,8 @@ export function useRequireAuth() {
 
       if (data?.user) {
         setUserId(data.user.id);
+      } else if (error) {
+        console.error(error);
       } else {
         console.warn("Signed in, but got no data.user");
       }
