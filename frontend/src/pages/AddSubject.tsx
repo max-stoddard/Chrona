@@ -65,6 +65,27 @@ export default function AddSubjectPage() {
       if (!res.ok) throw new Error(await res.text());
 
       // success → back to /subjects
+
+      for (const exam of exams) {
+        const examPayload = {
+          name: exam.name,
+          date: exam.date,
+          difficulty : exam.difficulty == 'Easy' ? 0
+                     : exam.difficulty == 'Medium' ? 1
+                     : exam.difficulty == 'Hard' ? 2
+                     : 0,
+        };
+
+        const examRes = await fetch(
+          `${api}/api/subjects/${subjectId}/exams`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(examPayload),
+          });
+
+          if (!examRes.ok) throw new Error( await examRes.text())
+      }
+
       navigate('/subjects');
     } catch (err) {
       // eslint-disable-next-line no-console
