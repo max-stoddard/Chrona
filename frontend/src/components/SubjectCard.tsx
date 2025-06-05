@@ -23,7 +23,7 @@ const SubjectCard: React.FC<SubjectCardProps> = ({ name, onView, onDelete }) => 
         ×
     </button>
     {/* Brief Exams */}
-    <p className="body-2 exams-line">Exams:&nbsp;</p>
+    {/* <p className="body-2 exams-line">Exams:&nbsp;</p>}
     
     {/* View Details */}
     <button className="view-details-button button-text" onClick={onView}>
