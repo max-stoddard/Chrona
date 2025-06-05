@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import SessionCard from '../components/SessionCard';
 
 import { createSession, finishSession } from '../api/session';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRequireAuth } from '../hooks/useRequireAuth';
 
 interface State {
@@ -19,9 +19,12 @@ export default function SessionPage() {
   const { state } = useLocation();
   const navigate  = useNavigate();
   const userId = useRequireAuth()
+  const createdRef = useRef(false);
+
 
   const [sessionId, setSessionId] = useState<string>();
   const [startTime, setStartTime] = useState<string>();
+  const [creating, setCreating] = useState(true);
 
   /* If user refreshes / loads directly, bail out */
   if (!state) {
@@ -40,6 +43,9 @@ export default function SessionPage() {
 
   /* Create session exactly once */
   useEffect(() => {
+    if (createdRef.current) return;
+    createdRef.current = true;
+
     const started_at = new Date().toISOString();          // exact timestamp
     setStartTime(started_at);
 
@@ -49,7 +55,11 @@ export default function SessionPage() {
       exam_id,
       started_at,
     })
-      .then(setSessionId)
+      .then((id) => {
+        setSessionId(id);
+        setCreating(false);
+        console.log("Created session [ID = " + id +"]");
+      })
       .catch((err) => {
         console.error(err);
         navigate('/', { replace: true });
@@ -65,6 +75,8 @@ export default function SessionPage() {
       } catch (err) {
         console.error(err);
       }
+    } else {
+      console.warn("Finished but sessionID: " + sessionId + " or startTime: " + startTime + " is null")
     }
     navigate('/');
   };
@@ -73,12 +85,16 @@ export default function SessionPage() {
     <div className="dashboard">
       <Navbar />
       <div className="content-wrapper">
-        <SessionCard
-          subject={subject_name}
-          exam={exam_name}
-          examDate={exam_date}
-          onFinish={handleFinish}
-        />
+        {!creating && sessionId ? (
+          <SessionCard
+             subject={subject_name}
+             exam={exam_name}
+             examDate={exam_date}
+             onFinish={handleFinish}
+           />
+        ) : (
+          <p>Starting session…</p>
+        )}
       </div>
     </div>
   );
