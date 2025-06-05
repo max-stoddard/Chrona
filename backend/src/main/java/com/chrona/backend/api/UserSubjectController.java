@@ -34,9 +34,8 @@ public class UserSubjectController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UUID create(@PathVariable UUID userId, @RequestBody SubjectRequest body) {
-        UUID subjectId = UUID.randomUUID();
-        dao.insert(new UserSubject(subjectId, userId, body.name()));
-        return subjectId;
+        dao.insert(new UserSubject(body.subject_id(), userId, body.name()));
+        return body.subject_id;
     }
 
     /**
@@ -49,5 +48,5 @@ public class UserSubjectController {
     }
 
     /** Minimal DTO for subject creation */
-    public record SubjectRequest(String name) { }
+    public record SubjectRequest(String name, UUID subject_id) { }
 }
