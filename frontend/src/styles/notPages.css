@@ -1,0 +1,10 @@
+.nf-wrapper {
+  /* centres the block on screen without disturbing your layout */
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-bg-primary);
+}
