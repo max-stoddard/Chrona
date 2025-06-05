@@ -117,7 +117,7 @@ export default function SubjectsPage() {
         ) : (
           <div className="grid">
             {subjects.map((s) => (
-              <SubjectCard key={s.subject_id} name={s.subject_name} onView={() => navigate(`/subjects/${s.subject_id}`)} onDelete={()=>deletePage(s.subject_id)} />
+              <SubjectCard key={s.subject_id} name={s.subject_name} exams={s.exams} onView={() => navigate(`/subjects/${s.subject_id}`)} onDelete={()=>deletePage(s.subject_id)} />
             ))}
           </div>
         )}
