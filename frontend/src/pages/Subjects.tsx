@@ -5,11 +5,14 @@ import SubjectCard from '../components/SubjectCard';
 import supabase from '../../utils/supabase';
 import '../styles/subjectspage.css';
 import '../styles/typography.css';
+import type { Exam } from '../types/types';
+import { getExams } from '../api/exams';
 
 interface Subject {
   subject_id: string;
   user_id: string;
   subject_name: string;
+  exams: Exam[];
 }
 
 export default function SubjectsPage() {
@@ -24,7 +27,7 @@ export default function SubjectsPage() {
      */
     const init = async () => {
       try {
-        // 1. Authenticate (session is cached by Supabase client)
+        /* 1. authenticate (temp credentials) */
         await supabase.auth.signOut();
         const {
           data: { user },
@@ -34,15 +37,35 @@ export default function SubjectsPage() {
           password: 'testuser',
         });
         if (authError || !user) throw authError;
-
-        // 2. Call Spring‑Boot API with user ID to fetch subjects
-        const api = import.meta.env.VITE_API_BASE_URL as string;
-        const res = await fetch(`${api}/api/users/${user.id}/subjects`);
+    
+        /* 2. fetch subjects */
+        const api   = import.meta.env.VITE_API_BASE_URL as string;
+        const res   = await fetch(`${api}/api/users/${user.id}/subjects`);
         if (!res.ok) throw new Error(await res.text());
-
-        const data = await res.json();
-        console.log("Loaded subjects:", data);
-        setSubjects(data);
+    
+        const baseSubjects: Omit<Subject, 'exams'>[] = await res.json();
+    
+        /* 3. attach top-two exams to each subject */
+        const enriched: Subject[] = await Promise.all(
+          baseSubjects.map(async (s) => {
+            try {
+              const allExams = await getExams(s.subject_id);
+    
+              // sort by soonest date and keep only the first 2
+              allExams.sort(
+                (a, b) =>
+                  new Date(a.exam_date).getTime() -
+                  new Date(b.exam_date).getTime(),
+              );
+              return { ...s, exams: allExams.slice(0, 2) };
+            } catch {
+              // if exam fetch fails, fall back to empty list
+              return { ...s, exams: [] };
+            }
+          }),
+        );
+    
+        setSubjects(enriched);
       } catch (err) {
         /* eslint-disable no-console */
         console.error('Failed to load subjects', err);
