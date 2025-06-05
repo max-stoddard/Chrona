@@ -41,14 +41,16 @@ export default function SessionPage() {
 
   /* Create session exactly once */
   useEffect(() => {
+    if (!userId) return;
+    
     if (createdRef.current) return;
     createdRef.current = true;
 
-    const started_at = new Date().toISOString();          // exact timestamp
+    const started_at = new Date().toISOString();
     setStartTime(started_at);
 
     createSession({
-      user_id: userId!,
+      user_id: userId,
       subject_id: subject_id,
       exam_id: exam_id,
       started_at,
@@ -56,14 +58,13 @@ export default function SessionPage() {
       .then((id) => {
         setSessionId(id);
         setCreating(false);
-        console.log("Created session [ID = " + id +"]");
+        console.log("Created session [ID = ${id}]");
       })
       .catch((err) => {
         console.error(err);
         navigate('/', { replace: true });
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // run once on mount
+  }, [userId, subject_id, exam_id, navigate]);
 
   /* Handle finish click */
   const handleFinish = async () => {
