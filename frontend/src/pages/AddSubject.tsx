@@ -48,10 +48,11 @@ export default function AddSubjectPage() {
 
       const userID = user.id;
       // build payload
-      const payload = { subject_id:subjectId, user_id:userID,
-       name:subjectName.trim() };
-
-      
+      const payload = { 
+        subject_id:subjectId, 
+        user_id:userID,
+        name:subjectName.trim() 
+      };
 
       const api = import.meta.env.VITE_API_BASE_URL as string;
       const res = await fetch(
