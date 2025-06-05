@@ -1,61 +1,56 @@
-import React from "react";
-import Card from "./Card";
-import "../styles/typography.css";
-import "../styles/theme.css";
+import React from 'react';
+import Card from './Card';
+import useStopwatch from '../hooks/useStopwatch';
+import '../styles/sessioncard.css';
+import playIcon from '../assets/play-button-arrowhead.png';
+import pauseIcon from '../assets/pause.png';
+import finishIcon from '../assets/flag-checkered.png';
 
-interface SessionCardProps {
-  subjectName: string;
-  examName: string;
-  examDate: Date;
-  onStartPause?: () => void;
-  onFinish?: () => void;
-  running?: boolean;
-  seconds?: number;
+interface Props {
+  subject: string;
+  exam: string;
+  examDate: string;
+  onFinish: () => void;
   editable?: boolean;
   onEdit?: () => void;
 }
 
-const formatTime = (total: number) =>
-  new Date(total * 1000).toISOString().substring(11, 19);
+const SessionCard: React.FC<Props> = ({ subject, exam, examDate, onFinish, editable, onEdit }) => {
+  const { formatted, running, start, pause } = useStopwatch(true);
 
-const SessionCard: React.FC<SessionCardProps> = ({
-  subjectName,
-  examName,
-  examDate,
-  onStartPause,
-  onFinish,
-  running = false,
-  seconds = 0,
-  editable = false,
-  onEdit,
-}) => (
-  <Card>
-    <p className="heading-2">Ready for your next session?</p>
-    <p className="body-1">{subjectName}</p>
-    <p className="body-1">{examName}</p>
-    <p className="body-2">{examDate.toLocaleDateString()}</p>
+  return (
+    <Card className="session-card">
+      <h2 className="heading-2">{subject}</h2>
+      <p className="body-1">{exam}</p>
+      <p className="body-2">{new Date(examDate).toLocaleDateString()}</p>
 
-    {editable && (
-      <button className="view-details-button button-text" onClick={onEdit}>
-        Edit
-      </button>
-    )}
+      {/* Stopwatch */}
+      <p className="stopwatch">{formatted}</p>
 
-    {onStartPause && (
-      <button className="button-start" onClick={onStartPause} style={{ marginTop: 20 }}>
-        <span className="button-text">{running ? "Pause" : "Start"} Session</span>
-      </button>
-    )}
-    {onFinish && (
-      <button className="button-start" onClick={onFinish} style={{ marginTop: 10 }}>
-        <span className="button-text">Finish Session</span>
-      </button>
-    )}
+      {/* Controls */}
+      <div className="controls">
+        {running ? (
+          <button className="icon-btn" onClick={pause}>
+            <img src={pauseIcon} alt="Pause" />
+          </button>
+        ) : (
+          <button className="icon-btn" onClick={start}>
+            <img src={playIcon} alt="Start" />
+          </button>
+        )}
 
-    {onStartPause && (
-      <p className="heading-2" style={{ marginTop: 20 }}>{formatTime(seconds)}</p>
-    )}
-  </Card>
-);
+        <button className="icon-btn finish" onClick={onFinish}>
+          <img src={finishIcon} alt="Finish" />
+        </button>
+      </div>
+
+      {editable && (
+        <button className="edit-link button-text" onClick={onEdit}>
+          Change subject / exam
+        </button>
+      )}
+    </Card>
+  );
+};
 
 export default SessionCard;
