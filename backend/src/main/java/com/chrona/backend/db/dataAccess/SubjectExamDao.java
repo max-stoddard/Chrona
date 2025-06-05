@@ -35,7 +35,7 @@ public class SubjectExamDao {
             SELECT exam_id, subject_id, exam_name, exam_date, exam_difficulty
             FROM user_subject_exams
             WHERE subject_id = ?
-            ORDER BY exam_date DESC
+            ORDER BY exam_date ASC
             """, ROW_MAPPER, subjectId);
     }
 
