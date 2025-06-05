@@ -35,7 +35,7 @@ public class SubjectExamDao {
             SELECT exam_id, subject_id, exam_name, exam_date, exam_difficulty
             FROM user_subject_exams
             WHERE subject_id = ?
-            ORDER BY exam_date DESC
+            ORDER BY exam_date ASC
             """, ROW_MAPPER, subjectId);
     }
 
@@ -49,6 +49,20 @@ public class SubjectExamDao {
         } catch (EmptyResultDataAccessException ex) {
             return Optional.empty();
         }
+    }
+
+    public List<UserSubjectExam> selectAllByUser(UUID userId) {
+        return jdbcTemplate.query("""
+            SELECT e.exam_id,
+                e.subject_id,
+                e.exam_name,
+                e.exam_date,
+                e.exam_difficulty
+            FROM user_subject_exams e
+            JOIN user_subjects      s ON s.subject_id = e.subject_id
+            WHERE s.user_id = ?
+            ORDER BY e.exam_date DESC
+            """, ROW_MAPPER, userId);
     }
 
     // ──────────────────────────────────────────────────────────────────────────────

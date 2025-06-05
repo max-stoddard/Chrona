@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -29,29 +30,33 @@ public class UserSessionDao {
             rs.getObject("exam_id", UUID.class),
             rs.getObject("started_at", OffsetDateTime.class).toInstant(),
             Optional.ofNullable(rs.getObject("ended_at", OffsetDateTime.class))
-            .map(OffsetDateTime::toInstant)
-            .orElse(null),
+                .map(OffsetDateTime::toInstant)
+                .orElse(null),
             rs.getObject("seconds_spent", Integer.class)
     );
 
     /** Start / create a session */
     public UUID insert(UUID userId, UUID subjectId, UUID examId, Instant startedAt) {
         UUID sessionId = UUID.randomUUID();
+        OffsetDateTime startedAtOdt = OffsetDateTime.ofInstant(startedAt, ZoneOffset.UTC);
+
         jdbcTemplate.update("""
-            INSERT INTO user_sessions(session_id, user_id, subject_id, exam_id, started_at)
-            VALUES(?,?,?,?,?)""",
-                sessionId, userId, subjectId, examId, startedAt
+            INSERT INTO user_sessions(session_id, user_id, subject_id, exam_id, started_at, seconds_spent)
+            VALUES(?,?,?,?,?,?)""",
+                sessionId, userId, subjectId, examId, startedAtOdt, 0
         );
         return sessionId;
     }
 
     /** Finish a session */
     public void updateFinish(UUID sessionId, Instant endedAt, int secondsSpent) {
+        OffsetDateTime endedAtOdt = OffsetDateTime.ofInstant(endedAt, ZoneOffset.UTC);
+        
         jdbcTemplate.update("""
             UPDATE user_sessions
             SET ended_at = ?, seconds_spent = ?
             WHERE session_id = ?""",
-                endedAt, secondsSpent, sessionId
+                endedAtOdt, secondsSpent, sessionId
         );
     }
 

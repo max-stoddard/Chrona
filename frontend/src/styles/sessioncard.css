@@ -1,0 +1,51 @@
+@import './theme.css';
+@import './typography.css';
+
+.session-card {
+  gap: 8px;
+}
+
+.stopwatch {
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 32px;
+  line-height: 40px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.icon-btn {
+  background-color: var(--color-button-bg);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-btn.finish {
+  background-color: #ffdede;
+}
+
+.edit-link {
+  margin-top: 14px;
+  align-self: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}

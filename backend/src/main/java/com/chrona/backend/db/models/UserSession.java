@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -16,24 +18,31 @@ public class UserSession {
 
     @Id
     @Column("session_id")
+    @JsonProperty("session_id")
     private UUID sessionId;
 
     @Column("user_id")
+    @JsonProperty("user_id")
     private UUID userId;
 
     @Column("subject_id")
+    @JsonProperty("subject_id")
     private UUID subjectId;
 
     @Column("exam_id")
+    @JsonProperty("exam_id")
     private UUID examId;
 
     @Column("started_at")
+    @JsonProperty("started_at")
     private Instant startedAt;
 
     @Column("ended_at")
+    @JsonProperty("ended_at")
     private Instant endedAt;
 
     @Column("seconds_spent")
+    @JsonProperty("seconds_spent")
     private Integer secondsSpent;
 
     public UserSession() {}
