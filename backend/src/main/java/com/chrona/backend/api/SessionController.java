@@ -22,14 +22,14 @@ public class SessionController {
     @PostMapping("/sessions")
     @ResponseStatus(HttpStatus.CREATED)
     public StartSessionResponse start(@RequestBody StartSessionRequest body) {
-        UUID sessionId = dao.insert(body.userId(), body.subjectId(), body.examId(), body.startedAt());
+        UUID sessionId = dao.insert(body.user_id(), body.subject_id(), body.exam_id(), body.started_at());
         return new StartSessionResponse(sessionId);
     }
 
     @PutMapping("/sessions/{sessionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void finish(@PathVariable UUID sessionId, @RequestBody FinishSessionRequest body) {
-        dao.updateFinish(sessionId, body.endedAt(), body.secondsSpent());
+        dao.updateFinish(sessionId, body.ended_at(), body.seconds_spent());
     }
 
     @GetMapping("/users/{userId}/sessions")
@@ -41,7 +41,7 @@ public class SessionController {
     }
 
     // DTOs
-    public record StartSessionRequest(UUID userId, UUID subjectId, UUID examId, Instant startedAt) {}
-    public record StartSessionResponse(UUID sessionId) {}
-    public record FinishSessionRequest(Instant endedAt, int secondsSpent) {}
+    public record StartSessionRequest(UUID user_id, UUID subject_id, UUID exam_id, Instant started_at) {}
+    public record StartSessionResponse(UUID session_id) {}
+    public record FinishSessionRequest(Instant ended_at, int seconds_spent) {}
 }
