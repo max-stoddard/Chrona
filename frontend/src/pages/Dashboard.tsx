@@ -88,7 +88,6 @@ export default function Dashboard() {
       exam_date:    exam.exam_date,
       subject_id:   subject.subject_id,
       exam_id:      exam.exam_id,
-      user_id:      userId,
     }
 
     console.log('Navigating to /session with payload:', payload);

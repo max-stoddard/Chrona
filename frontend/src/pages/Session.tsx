@@ -12,7 +12,6 @@ interface State {
   exam_date: string;
   subject_id: string;
   exam_id: string;
-  user_id: string;
 }
 
 export default function SessionPage() {
@@ -38,7 +37,6 @@ export default function SessionPage() {
     exam_date,
     subject_id,
     exam_id,
-    user_id,
   } = state as State;
 
   /* Create session exactly once */
@@ -50,9 +48,9 @@ export default function SessionPage() {
     setStartTime(started_at);
 
     createSession({
-      user_id,
-      subject_id,
-      exam_id,
+      user_id: userId!,
+      subject_id: subject_id,
+      exam_id: exam_id,
       started_at,
     })
       .then((id) => {
