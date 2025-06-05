@@ -105,7 +105,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back!</h1>
+          <h1 className="heading-1">Welcome back, Sarah!</h1>
           <Card><p className="body-1">Loading your data…</p></Card>
         </div>
       </div>
@@ -116,7 +116,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back!</h1>
+          <h1 className="heading-1">Welcome back, Sarah!</h1>
           <Card>
             <p className="heading-2">You don't have any subjects yet</p>
             <button className="button-start" onClick={() => navigate('/add-subject')}>
@@ -132,7 +132,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back!</h1>
+          <h1 className="heading-1">Welcome back, Sarah!</h1>
           <Card>
             <p className="heading-2">No exams for {subject.subject_name}</p>
             <button className="button-start" onClick={() => navigate('/subjects')}>
@@ -149,7 +149,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <Navbar />
       <div className="content-wrapper">
-        <h1 className="heading-1">Welcome back!</h1>
+        <h1 className="heading-1">Welcome back, Sarah!</h1>
 
         {/* Upcoming session */}
         <Card>
@@ -175,7 +175,7 @@ export default function Dashboard() {
         <div className="card-row">
             {sessions.length > 0 && (
             <Card>
-                <h2 className="heading-2">Recent sessions</h2>
+                <h2 className="heading-2">Your recent sessions</h2>
                 <ul className="body-2" style={{ listStyle: 'none', padding: 0 }}>
                 {sessions.slice(0, 5).map((s) => {
                     const totalSeconds = s.seconds_spent ?? 0;
