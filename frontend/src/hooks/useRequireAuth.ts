@@ -30,7 +30,11 @@ export function useRequireAuth() {
         password: 'testuser',
       });
 
-      if (error) console.log("Auth Error !!!");
+      if (data?.user) {
+        setUserId(data.user.id);
+      } else {
+        console.warn("Signed in, but got no data.user");
+      }
     };
     init();
   }, [navigate]);
