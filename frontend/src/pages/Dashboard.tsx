@@ -19,11 +19,13 @@ export default function Dashboard() {
   const userId = useRequireAuth();
   const navigate = useNavigate();
 
-  const [subject, setSubject] = useState<Subject | null>(null);
-  const [exam, setExam] = useState<Exam | null>(null);
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [upcoming, setUpcoming] = useState<(Exam & { subject_name?: string })[]>([]);
+  const [subject, setSubject]               = useState<Subject | null>(null);
+  const [exam, setExam]                     = useState<Exam | null>(null);
+  const [sessions, setSessions]             = useState<Session[]>([]);
+  const [loading, setLoading]               = useState(true);
+  const [upcoming, setUpcoming]             = useState<Exam[]>([]);
+  const [completedExams, setCompletedExams] = useState(-1); // -1 means no progress bar
+  const [totalExams, setTotalExams]         = useState(0);
 
   // ───────────────────────── LOAD EVERYTHING ─────────────────────────
   useEffect(() => {
@@ -37,6 +39,14 @@ export default function Dashboard() {
         // ── 1. Get all exams for this user
         const allExams = await getUserExams(uid);
         const soonest = await getUpcomingExams(uid);
+
+        // Calculate progress percentage based on completed exams
+        if (allExams.length > 0) {
+          const currentDate = new Date();
+          const completedExams = allExams.filter(exam => new Date(exam.exam_date) < currentDate);
+          setCompletedExams(completedExams.length);
+          setTotalExams(allExams.length);
+        }
 
         console.log(allExams);
         if (cancelled) return;
@@ -68,12 +78,12 @@ export default function Dashboard() {
         // ── 3. Fetch recent sessions, then filter by the local firstExam 
         const allSessions = await getSessions(uid);
         if (cancelled) return;
-        setSessions(allSessions);
-        setUpcoming(soonest);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (!cancelled) setLoading(false);
+          setSessions(allSessions);
+          setUpcoming(soonest);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          if (!cancelled) setLoading(false);
       }
     } 
 
@@ -169,6 +179,34 @@ export default function Dashboard() {
                   onClick={() => navigate('/subjects')}>
             Change subject / exam
           </button>
+        </Card>
+
+        {/* Progress Card */}
+        <Card>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <h2 className="heading-2" style={{ margin: 0 }}>Exams Completed</h2>
+            <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
+              ({completedExams} / {totalExams})
+            </span>
+          </div>
+          <div style={{ 
+            width: '100%',
+            height: '24px', 
+            backgroundColor: '#eee',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: `${(completedExams / totalExams) * 100}%`,
+              height: '100%',
+              backgroundColor: '#000000',
+              transition: 'width 0.3s ease'
+            }} />
+          </div>
         </Card>
 
         {/* Recent sessions */}
