@@ -1,4 +1,4 @@
-package com.chrona.backend.db.dataAccess;
+package com.chrona.backend.db.daos;
 
 import com.chrona.backend.db.models.UserSubject;
 import org.springframework.beans.factory.annotation.Autowired;
