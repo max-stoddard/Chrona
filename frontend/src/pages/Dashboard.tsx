@@ -23,7 +23,8 @@ export default function Dashboard() {
   const [exam, setExam]           = useState<Exam | null>(null);
   const [sessions, setSessions]   = useState<Session[]>([]);
   const [loading, setLoading]     = useState(true);
-  const [upcoming, setUpcoming] = useState<Exam[]>([]);
+  const [upcoming, setUpcoming]   = useState<Exam[]>([]);
+  const [progress, setProgress]   = useState(-1); // -1 means no progress bar
 
   // ───────────────────────── LOAD EVERYTHING ─────────────────────────
   useEffect(() => {
@@ -37,6 +38,14 @@ export default function Dashboard() {
         // ── 1. Get all exams for this user
         const allExams = await getUserExams(uid);
         const soonest = await getUpcomingExams(uid);
+
+        // Calculate progress percentage based on completed exams
+        if (allExams.length > 0) {
+          const currentDate = new Date();
+          const completedExams = allExams.filter(exam => new Date(exam.exam_date) < currentDate);
+          const progressPercent = Math.round((completedExams.length / allExams.length) * 100);
+          setProgress(progressPercent);
+        }
 
         console.log(allExams);
         if (cancelled) return;
