@@ -18,8 +18,6 @@ export default function AddSubjectPage() {
   const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
 
-  const subjectId = crypto.randomUUID();
-
   const addExam = () =>
     setExams((prev) => [...prev, { name: '', date: '', difficulty: '', confidence: ''}]);
 
@@ -43,11 +41,10 @@ export default function AddSubjectPage() {
       if (error || !user) throw error ?? new Error('No user session');
 
       const userID = user.id;
-      // build payload
-      const payload = { 
-        subject_id:subjectId, 
-        user_id:userID,
-        name:subjectName.trim() 
+      
+      // Create subject first - backend expects 'name' field, not 'subject_name'
+      const subjectPayload = { 
+        name: subjectName.trim() 
       };
 
       const api = import.meta.env.VITE_API_BASE_URL as string;
@@ -56,31 +53,39 @@ export default function AddSubjectPage() {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(subjectPayload),
         },
       );
       if (!res.ok) throw new Error(await res.text());
 
-      // success → back to /subjects
+      // Backend returns { subject_id: "uuid" }
+      const { subject_id } = await res.json();
 
+      // Create exams for this subject
       for (const exam of exams) {
+        if (!exam.name.trim()) continue; // Skip empty exams
+        
         const examPayload = {
           name: exam.name,
           date: exam.date,
-          difficulty : exam.difficulty == 'Easy' ? 0
-                     : exam.difficulty == 'Medium' ? 1
-                     : exam.difficulty == 'Hard' ? 2
+          difficulty: exam.difficulty === 'Easy' ? 0
+                     : exam.difficulty === 'Medium' ? 1
+                     : exam.difficulty === 'Hard' ? 2
+                     : 0,
+          confidence: exam.confidence === 'Not confident' ? 0
+                     : exam.confidence === 'Somewhat confident' ? 1
+                     : exam.confidence === 'Very confident' ? 2
                      : 0,
         };
 
         const examRes = await fetch(
-          `${api}/api/subjects/${subjectId}/exams`, {
+          `${api}/api/users/${userID}/subjects/${subject_id}/exams`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(examPayload),
           });
 
-          if (!examRes.ok) throw new Error( await examRes.text())
+        if (!examRes.ok) throw new Error(await examRes.text());
       }
 
       navigate('/subjects');
@@ -93,7 +98,7 @@ export default function AddSubjectPage() {
     }
   };
 
-  /* Add one empty exam row automatically so the UI isn’t blank */
+  /* Add one empty exam row automatically so the UI isn't blank */
   useEffect(() => { if (exams.length === 0) addExam(); }, []);
 
   return (
