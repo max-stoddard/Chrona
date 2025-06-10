@@ -4,6 +4,7 @@ import com.chrona.backend.db.models.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -69,6 +70,7 @@ public class UserSessionDao {
         return sessionId;
     }
 
+    @Transactional
     public void updateFinish(UUID sessionId,
                              Instant endedAt,
                              int secondsSpent,
@@ -76,6 +78,7 @@ public class UserSessionDao {
                              Short sessionFocus) {
         OffsetDateTime endedAtOdt = OffsetDateTime.ofInstant(endedAt, ZoneOffset.UTC);
 
+        // 1) Update the session with the end time and other details
         jdbcTemplate.update(
                 """
                 UPDATE user_sessions
@@ -90,6 +93,32 @@ public class UserSessionDao {
                 sessionConfidence,
                 sessionFocus,
                 sessionId);
+
+        // 2) Add this session’s time onto the exam’s total
+        jdbcTemplate.update(
+            """
+            UPDATE user_subject_exams AS e
+               SET exam_seconds_spent = e.exam_seconds_spent + ?
+              FROM user_sessions AS s
+            WHERE e.exam_id = s.exam_id
+              AND s.session_id = ?
+            """,
+            secondsSpent,
+            sessionId
+        );
+
+        // 3) Add this session’s time onto the subject’s total
+        jdbcTemplate.update(
+            """
+            UPDATE user_subjects AS s
+               SET subject_seconds_spent = s.subject_seconds_spent + ?
+              FROM user_sessions AS u
+            WHERE s.subject_id = u.subject_id
+              AND u.session_id = ?
+            """,
+            secondsSpent,
+            sessionId
+        );
     }
 
     public Optional<UserSession> select(UUID sessionId) {
