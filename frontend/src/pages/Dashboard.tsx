@@ -133,38 +133,6 @@ export default function Dashboard() {
               + Add a subject
             </button>
           </Card>
-
-          {/* Progress Card */}
-          {completedExams >= 0 && (
-            <Card>
-              <h2 className="heading-2" style={{ textAlign: 'left', marginBottom: '12px' }}>Exams Completed</h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
-                <div style={{ 
-                width: '85%',
-                height: '24px', 
-                backgroundColor: '#eee',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                position: 'relative'
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  left: 0,
-                  top: 0,
-                  width: `${(completedExams / totalExams) * 100}%`,
-                  height: '100%',
-                  backgroundColor: '#000000',
-                  transition: 'width 0.3s ease'
-                }} />
-              </div>
-              <div style={{ width: '15%', textAlign: 'right' }}>
-                <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
-                  {completedExams} / {totalExams}
-                </span>
-              </div>
-            </div>
-          </Card>
-          )}
         </div>
       </div>
     );
@@ -211,6 +179,36 @@ export default function Dashboard() {
                   onClick={() => navigate('/subjects')}>
             Change subject / exam
           </button>
+        </Card>
+
+        {/* Progress Card */}
+        <Card>
+          <h2 className="heading-2" style={{ textAlign: 'left', marginBottom: '12px' }}>Exams Completed</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
+            <div style={{ 
+            width: '85%',
+            height: '24px', 
+            backgroundColor: '#eee',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: `${(completedExams / totalExams) * 100}%`,
+              height: '100%',
+              backgroundColor: '#000000',
+              transition: 'width 0.3s ease'
+            }} />
+            </div>
+            <div style={{ width: '15%', textAlign: 'right' }}>
+              <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
+                {completedExams} / {totalExams}
+              </span>
+            </div>
+          </div>
         </Card>
 
         {/* Recent sessions */}
