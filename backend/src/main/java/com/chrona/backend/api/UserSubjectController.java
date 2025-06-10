@@ -1,9 +1,9 @@
+// backend/src/main/java/com/chrona/backend/api/UserSubjectController.java
 package com.chrona.backend.api;
 
 import com.chrona.backend.db.dataAccess.SubjectExamDao;
 import com.chrona.backend.db.dataAccess.UserSubjectDao;
 import com.chrona.backend.db.models.UserSubject;
-import com.chrona.backend.db.models.UserSubjectExam;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,80 +17,96 @@ import java.util.UUID;
 @RequestMapping("/api/users/{userId}/subjects")
 public class UserSubjectController {
 
-    private final UserSubjectDao userSubjectDao;
-    private final SubjectExamDao examDao;
+    private final UserSubjectDao subjectDao;
+    private final SubjectExamDao  examDao;
 
-    public UserSubjectController(UserSubjectDao userSubjectDao, SubjectExamDao  examDao) {
-        this.userSubjectDao = userSubjectDao;
-        this.examDao = examDao;
+    public UserSubjectController(UserSubjectDao subjectDao, SubjectExamDao examDao) {
+        this.subjectDao = subjectDao;
+        this.examDao    = examDao;
     }
 
-    /**
-     * Fetch every subject that belongs to *userId*.
-     */
+    /* ─────────────────────────────  Queries  ───────────────────────────── */
+
+    /** List every subject that belongs to the given user. */
     @GetMapping
     public List<UserSubject> list(@PathVariable UUID userId) {
-        return userSubjectDao.selectAllByUser(userId);
+        return subjectDao.selectAllByUser(userId);
     }
 
-    // UserSubjectController.java
+    /** Get one subject plus its exams (pretty view model). */
     @GetMapping("/{subjectId}")
     public SubjectDetailsResponse one(
             @PathVariable UUID userId,
             @PathVariable UUID subjectId) {
 
-        UserSubject subject = userSubjectDao.select(subjectId)
+        UserSubject subject = subjectDao.select(subjectId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        List<UserSubjectExam> rows = examDao.selectAllBySubject(subjectId);
-
-        // convert DB ⇒ API payload
-        List<ExamDto> exams = rows.stream()
+        List<ExamDto> exams = examDao.selectAllBySubject(subjectId)
+                .stream()
                 .map(r -> new ExamDto(
+                        r.getExamId(),
                         r.getExamName(),
                         r.getExamDate(),
-                        switch (r.getExamDifficulty()) {
-                            case 0 -> "Easy";
-                            case 1 -> "Medium";
-                            default -> "Hard";
-                        }))
+                        r.getExamDifficulty(),
+                        r.getExamConfidence(),
+                        r.getExamSecondsSpent()))
                 .toList();
 
         return new SubjectDetailsResponse(
                 subject.getSubjectId(),
                 subject.getSubjectName(),
+                subject.getSubjectSecondsSpent(),
                 exams);
     }
 
-    public record ExamDto(String name, LocalDate date, String difficulty) { }
+    /* ─────────────────────────────  Mutations  ─────────────────────────── */
 
-    public record SubjectDetailsResponse(
-            UUID subject_id,
-            String subject_name,
-            List<ExamDto> exams) { }
-
-
-    /**
-     * Insert a new subject for *userId*.
-     *
-     * @return server‑generated *subjectId* (UUID)
-     */
+    /** Create a new subject for the user and return its server-generated UUID. */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UUID create(@PathVariable UUID userId, @RequestBody SubjectRequest body) {
-        userSubjectDao.insert(new UserSubject(body.subject_id(), userId, body.name()));
-        return body.subject_id;
+    public CreateSubjectResponse create(
+            @PathVariable UUID userId,
+            @RequestBody SubjectRequest body) {
+
+        UUID subjectId = UUID.randomUUID();
+        long seconds   = body.seconds_spent() == null ? 0L : body.seconds_spent();
+
+        subjectDao.insert(new UserSubject(subjectId, userId, body.name(), seconds));
+        return new CreateSubjectResponse(subjectId);
     }
 
-    /**
-     * Permanently delete the subject identified by *subjectId*.
-     */
+    /** Permanently delete the subject by primary key. */
     @DeleteMapping("/{subjectId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID subjectId) {
-        userSubjectDao.delete(subjectId);
+        subjectDao.delete(subjectId);
     }
 
-    /** Minimal DTO for subject creation */
-    public record SubjectRequest(String name, UUID subject_id) { }
+    /* inbound DTO for create/update */
+    public record SubjectRequest(
+        String name,
+        Long seconds_spent
+    ) { }
+
+    /* outbound DTOs */
+    public record CreateSubjectResponse(
+        UUID subject_id
+    ) { }
+
+    public record ExamDto(
+        UUID   exam_id,
+        String exam_name,
+        LocalDate exam_date,
+        short exam_difficulty,
+        short  exam_confidence,
+        long   exam_seconds_spent
+    ) { }
+
+    public record SubjectDetailsResponse(
+        UUID            subject_id,
+        String          subject_name,
+        long            subject_seconds_spent,
+        List<ExamDto>   exams
+    ) { }
 }
