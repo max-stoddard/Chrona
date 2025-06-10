@@ -15,7 +15,6 @@ import java.util.UUID;
  */
 @Table("user_sessions")
 public class UserSession {
-
     @Id
     @Column("session_id")
     @JsonProperty("session_id")
@@ -45,9 +44,25 @@ public class UserSession {
     @JsonProperty("seconds_spent")
     private Integer secondsSpent;
 
-    public UserSession() {}
+    @Column("session_confidence")
+    @JsonProperty("session_confidence")
+    private Short sessionConfidence;
 
-    public UserSession(UUID sessionId, UUID userId, UUID subjectId, UUID examId, Instant startedAt, Instant endedAt, Integer secondsSpent) {
+    @Column("session_focus")
+    @JsonProperty("session_focus")
+    private Short sessionFocus;
+
+    public UserSession(
+        UUID sessionId,
+        UUID userId,
+        UUID subjectId,
+        UUID examId,
+        Instant startedAt,
+        Instant endedAt,
+        Integer secondsSpent,
+        Short sessionConfidence,
+        Short sessionFocus
+    ) {
         this.sessionId = sessionId;
         this.userId = userId;
         this.subjectId = subjectId;
@@ -55,9 +70,10 @@ public class UserSession {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
         this.secondsSpent = secondsSpent;
+        this.sessionConfidence = sessionConfidence;
+        this.sessionFocus = sessionFocus;
     }
 
-    // Getters and setters
     public UUID getSessionId() { return sessionId; }
     public void setSessionId(UUID sessionId) { this.sessionId = sessionId; }
 
@@ -78,4 +94,25 @@ public class UserSession {
 
     public Integer getSecondsSpent() { return secondsSpent; }
     public void setSecondsSpent(Integer secondsSpent) { this.secondsSpent = secondsSpent; }
+
+    public Short getSessionConfidence() { return sessionConfidence; }
+    public void setSessionConfidence(Short sessionConfidence) { this.sessionConfidence = sessionConfidence; }
+
+    public Short getSessionFocus() { return sessionFocus; }
+    public void setSessionFocus(Short sessionFocus) { this.sessionFocus = sessionFocus; }
+
+    @Override
+    public String toString() {
+        return "UserSession{" +
+                "sessionId=" + sessionId +
+                ", userId=" + userId +
+                ", subjectId=" + subjectId +
+                ", examId=" + examId +
+                ", startedAt=" + startedAt +
+                ", endedAt=" + endedAt +
+                ", secondsSpent=" + secondsSpent +
+                ", sessionConfidence=" + sessionConfidence +
+                ", sessionFocus=" + sessionFocus +
+                '}';
+    }
 }

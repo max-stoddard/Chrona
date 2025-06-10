@@ -19,11 +19,11 @@ export default function Dashboard() {
   const userId = useRequireAuth();
   const navigate = useNavigate();
 
-  const [subject, setSubject]     = useState<Subject | null>(null);
-  const [exam, setExam]           = useState<Exam | null>(null);
-  const [sessions, setSessions]   = useState<Session[]>([]);
-  const [loading, setLoading]     = useState(true);
-  const [upcoming, setUpcoming] = useState<Exam[]>([]);
+  const [subject, setSubject] = useState<Subject | null>(null);
+  const [exam, setExam] = useState<Exam | null>(null);
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [upcoming, setUpcoming] = useState<(Exam & { subject_name?: string })[]>([]);
 
   // ───────────────────────── LOAD EVERYTHING ─────────────────────────
   useEffect(() => {
@@ -219,7 +219,6 @@ export default function Dashboard() {
             </Card>
             )}
         </div>
-
 
       </div>
     </div>

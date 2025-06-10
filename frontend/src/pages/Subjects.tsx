@@ -6,12 +6,12 @@ import supabase from '../../utils/supabase';
 import '../styles/subjectspage.css';
 import '../styles/typography.css';
 import type { Exam } from '../types/types';
-import { getExams } from '../api/exams';
 
 interface Subject {
   subject_id: string;
   user_id: string;
   subject_name: string;
+  subject_seconds_spent?: number;
   exams: Exam[];
 }
 
@@ -39,8 +39,8 @@ export default function SubjectsPage() {
         if (authError || !user) throw authError;
     
         /* 2. fetch subjects */
-        const api   = import.meta.env.VITE_API_BASE_URL as string;
-        const res   = await fetch(`${api}/api/users/${user.id}/subjects`);
+        const api = import.meta.env.VITE_API_BASE_URL as string;
+        const res = await fetch(`${api}/api/users/${user.id}/subjects`);
         if (!res.ok) throw new Error(await res.text());
     
         const baseSubjects: Omit<Subject, 'exams'>[] = await res.json();
@@ -49,15 +49,28 @@ export default function SubjectsPage() {
         const enriched: Subject[] = await Promise.all(
           baseSubjects.map(async (s) => {
             try {
-              const allExams = await getExams(s.subject_id);
-    
+              // Use the correct route structure for fetching exams
+              const examRes = await fetch(`${api}/api/users/${user.id}/subjects/${s.subject_id}/exams`);
+              if (!examRes.ok) throw new Error(await examRes.text());
+              
+              const allExams = await examRes.json();
+              
+              // Map backend exam structure to frontend structure
+              const mappedExams: Exam[] = allExams.map((e: any) => ({
+                exam_id: e.exam_id,
+                subject_id: e.subject_id,
+                exam_name: e.exam_name,
+                exam_date: e.exam_date,
+                exam_difficulty: e.exam_difficulty,
+              }));
+
               // sort by soonest date and keep only the first 2
-              allExams.sort(
-                (a, b) =>
+              mappedExams.sort(
+                (a: Exam, b: Exam) =>
                   new Date(a.exam_date).getTime() -
                   new Date(b.exam_date).getTime(),
               );
-              return { ...s, exams: allExams.slice(0, 2) };
+              return { ...s, exams: mappedExams.slice(0, 2) };
             } catch {
               // if exam fetch fails, fall back to empty list
               return { ...s, exams: [] };
@@ -76,30 +89,28 @@ export default function SubjectsPage() {
     init();
   }, []);
 
-    const deletePage = async (subject_id : String) => {
+  const deleteSubject = async (subject_id: string) => {
+    try {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-      try {
-        const {
-          data: { user },
-          error: authError,
-        } = await supabase.auth.getUser();
+      if (authError || !user) throw authError;
 
-        if (authError || !user)  throw authError;
+      const api = import.meta.env.VITE_API_BASE_URL as string;
+      const res = await fetch(`${api}/api/users/${user.id}/subjects/${subject_id}`, {
+        method: 'DELETE',
+      });
 
-        
+      if (!res.ok) throw new Error(await res.text());
 
-        const api = import.meta.env.VITE_API_BASE_URL as string;
-        const res = await fetch(`${api}/api/users/${user.id}/subjects/${subject_id}`, {
-          method: 'DELETE',
-        });
-
-        if (!res.ok) throw new Error(await res.text());
-
-        setSubjects(subjects.filter((s) => s.subject_id !== subject_id));
+      setSubjects(subjects.filter((s) => s.subject_id !== subject_id));
     } catch (err) {
       console.error("failed to delete subject", err);
     }
   };
+
   return (
     <div className="subjects-page">
       <Navbar />
@@ -117,7 +128,13 @@ export default function SubjectsPage() {
         ) : (
           <div className="grid">
             {subjects.map((s) => (
-              <SubjectCard key={s.subject_id} name={s.subject_name} exams={s.exams} onView={() => navigate(`/subjects/${s.subject_id}`)} onDelete={()=>deletePage(s.subject_id)} />
+              <SubjectCard 
+                key={s.subject_id} 
+                name={s.subject_name} 
+                exams={s.exams} 
+                onView={() => navigate(`/subjects/${s.subject_id}`)} 
+                onDelete={() => deleteSubject(s.subject_id)} 
+              />
             ))}
           </div>
         )}
