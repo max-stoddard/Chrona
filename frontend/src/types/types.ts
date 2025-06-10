@@ -2,6 +2,7 @@ export interface Subject {
   subject_id: string;
   user_id: string;
   subject_name: string;
+  subject_seconds_spent?: number;
 }
 
 export interface Exam {

@@ -132,6 +132,7 @@ export default function SubjectsPage() {
                 key={s.subject_id} 
                 name={s.subject_name} 
                 exams={s.exams} 
+                timeSpentSeconds={s.subject_seconds_spent}
                 onView={() => navigate(`/subjects/${s.subject_id}`)} 
                 onDelete={() => deleteSubject(s.subject_id)} 
               />
