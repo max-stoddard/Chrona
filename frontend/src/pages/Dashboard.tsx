@@ -183,10 +183,14 @@ export default function Dashboard() {
 
         {/* Progress Card */}
         <Card>
-          <h2 className="heading-2" style={{ textAlign: 'left', marginBottom: '12px' }}>Exams Completed</h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
-            <div style={{ 
-            width: '85%',
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <h2 className="heading-2" style={{ margin: 0 }}>Exams Completed</h2>
+            <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
+              ({completedExams} / {totalExams})
+            </span>
+          </div>
+          <div style={{ 
+            width: '100%',
             height: '24px', 
             backgroundColor: '#eee',
             borderRadius: '12px',
@@ -202,12 +206,6 @@ export default function Dashboard() {
               backgroundColor: '#000000',
               transition: 'width 0.3s ease'
             }} />
-            </div>
-            <div style={{ width: '15%', textAlign: 'right' }}>
-              <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
-                {completedExams} / {totalExams}
-              </span>
-            </div>
           </div>
         </Card>
 
