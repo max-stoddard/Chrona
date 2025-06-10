@@ -135,10 +135,11 @@ export default function Dashboard() {
           </Card>
 
           {/* Progress Card */}
-          <Card>
-            <h2 className="heading-2" style={{ textAlign: 'left', marginBottom: '12px' }}>Exams Completed</h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
-              <div style={{ 
+          {completedExams >= 0 && (
+            <Card>
+              <h2 className="heading-2" style={{ textAlign: 'left', marginBottom: '12px' }}>Exams Completed</h2>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%' }}>
+                <div style={{ 
                 width: '85%',
                 height: '24px', 
                 backgroundColor: '#eee',
@@ -163,6 +164,7 @@ export default function Dashboard() {
               </div>
             </div>
           </Card>
+          )}
         </div>
       </div>
     );
