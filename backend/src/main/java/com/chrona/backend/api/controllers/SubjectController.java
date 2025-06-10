@@ -1,6 +1,5 @@
-package com.chrona.backend.api;
+package com.chrona.backend.api.controllers;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chrona.backend.db.dataAccess.UserSubjectDao;
+import com.chrona.backend.db.daos.UserSubjectDao;
 import com.chrona.backend.db.models.UserSubject;
 
 @RestController

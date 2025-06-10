@@ -6,7 +6,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**
@@ -14,8 +13,7 @@ import java.util.UUID;
  * Maps to the <code>user_subjects</code> table.
  */
 @Table("user_subjects")
-public
-class UserSubject {
+public class UserSubject {
 
     @Id
     @Column("subject_id")
@@ -30,12 +28,15 @@ class UserSubject {
     @JsonProperty("subject_name")
     private String subjectName;
 
-    public UserSubject() {}
+    @Column("subject_seconds_spent")
+    @JsonProperty("subject_seconds_spent")
+    private Long subjectSecondsSpent;
 
-    public UserSubject(UUID subjectId, UUID userId, String subjectName) {
+    public UserSubject(UUID subjectId, UUID userId, String subjectName, Long subjectSecondsSpent) {
         this.subjectId = subjectId;
         this.userId = userId;
         this.subjectName = subjectName;
+        this.subjectSecondsSpent = subjectSecondsSpent;
     }
 
     public UUID getSubjectId() { return subjectId; }
@@ -47,12 +48,16 @@ class UserSubject {
     public String getSubjectName() { return subjectName; }
     public void setSubjectName(String subjectName) { this.subjectName = subjectName; }
 
+    public Long getSubjectSecondsSpent() { return subjectSecondsSpent; }
+    public void setSubjectSecondsSpent(Long subjectSecondsSpent) { this.subjectSecondsSpent = subjectSecondsSpent; }
+
     @Override
     public String toString() {
         return "UserSubject{" +
                 "subjectId=" + subjectId +
                 ", userId=" + userId +
                 ", subjectName='" + subjectName + '\'' +
+                ", subjectSecondsSpent=" + subjectSecondsSpent +
                 '}';
     }
 }
