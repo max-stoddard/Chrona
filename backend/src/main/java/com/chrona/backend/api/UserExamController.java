@@ -3,7 +3,6 @@ package com.chrona.backend.api;
 import com.chrona.backend.db.models.UserSubjectExam;
 import com.chrona.backend.db.dataAccess.SubjectExamDao;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
