@@ -1,7 +1,7 @@
-package com.chrona.backend.api;
+package com.chrona.backend.api.controllers;
 
+import com.chrona.backend.db.daos.SubjectExamDao;
 import com.chrona.backend.db.models.UserSubjectExam;
-import com.chrona.backend.db.dataAccess.SubjectExamDao;
 
 import org.springframework.web.bind.annotation.*;
 

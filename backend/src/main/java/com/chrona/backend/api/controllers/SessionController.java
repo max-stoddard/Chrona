@@ -1,11 +1,13 @@
-package com.chrona.backend.api;
+package com.chrona.backend.api.controllers;
 
-import com.chrona.backend.db.dataAccess.UserSessionDao;
+import com.chrona.backend.api.dtos.FinishSessionRequestDTO;
+import com.chrona.backend.api.dtos.StartSessionRequestDTO;
+import com.chrona.backend.api.dtos.StartSessionResponseDTO;
+import com.chrona.backend.db.daos.UserSessionDao;
 import com.chrona.backend.db.models.UserSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,19 +23,19 @@ public class SessionController {
 
     @PostMapping("/sessions")
     @ResponseStatus(HttpStatus.CREATED)
-    public StartSessionResponse start(@RequestBody StartSessionRequest body) {
+    public StartSessionResponseDTO start(@RequestBody StartSessionRequestDTO body) {
         UUID sessionId = dao.insert(
                 body.user_id(),
                 body.subject_id(),
                 body.exam_id(),
                 body.started_at());
-        return new StartSessionResponse(sessionId);
+        return new StartSessionResponseDTO(sessionId);
     }
 
     @PutMapping("/sessions/{sessionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void finish(@PathVariable UUID sessionId,
-                       @RequestBody FinishSessionRequest body) {
+                       @RequestBody FinishSessionRequestDTO body) {
         dao.updateFinish(
                 sessionId,
                 body.ended_at(),
@@ -47,18 +49,6 @@ public class SessionController {
                                     @RequestParam(defaultValue = "5") int limit) {
         return dao.selectRecentByUser(userId, limit);
     }
-
-    public record StartSessionRequest(UUID user_id,
-                                      UUID subject_id,
-                                      UUID exam_id,
-                                      Instant started_at) { }
-
-    public record StartSessionResponse(UUID session_id) { }
-
-    public record FinishSessionRequest(Instant ended_at,
-                                       int seconds_spent,
-                                       Short session_confidence,
-                                       Short session_focus) { }
 
     private static <T> T defaultIfNull(T val, T def) {
         return val != null ? val : def;

@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
-
-import com.chrona.backend.db.dataAccess.UserSubjectDao;
+import com.chrona.backend.db.daos.UserSubjectDao;
 import com.chrona.backend.db.models.UserSubject;
 
 import java.util.List;

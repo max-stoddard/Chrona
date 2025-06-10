@@ -1,11 +1,11 @@
-package com.chrona.backend.api;
+package com.chrona.backend.api.controllers;
 
-import com.chrona.backend.db.dataAccess.SubjectExamDao;
+import com.chrona.backend.api.dtos.ExamRequestDTO;
+import com.chrona.backend.db.daos.SubjectExamDao;
 import com.chrona.backend.db.models.UserSubjectExam;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,7 +44,7 @@ public class SubjectExamController {
     public UUID create(
             @PathVariable UUID userId,
             @PathVariable UUID subjectId,
-            @RequestBody ExamRequest body) {
+            @RequestBody ExamRequestDTO body) {
 
         UUID examId = UUID.randomUUID();
         UserSubjectExam exam = new UserSubjectExam(
@@ -67,7 +67,7 @@ public class SubjectExamController {
     public void update(
             @PathVariable UUID userId,
             @PathVariable UUID examId,
-            @RequestBody ExamRequest body) {
+            @RequestBody ExamRequestDTO body) {
 
         UserSubjectExam exam = new UserSubjectExam(
                 examId,
@@ -88,13 +88,6 @@ public class SubjectExamController {
     public void delete(@PathVariable UUID examId) {
         dao.delete(examId);
     }
-
-
-    public record ExamRequest(String name,
-                              LocalDate date,
-                              Short difficulty,
-                              Short confidence,
-                              Long secondsSpent) { }
 
 
     private static <T> T defaultIfNull(T value, T defaultVal) {
