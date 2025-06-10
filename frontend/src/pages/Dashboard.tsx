@@ -165,7 +165,7 @@ export default function Dashboard() {
             <span className="button-text">Start Session</span>
           </button>
 
-          <button className="button-text" style={{ marginTop: 8 }}
+          <button className="button-secondary" style={{ marginTop: 8 }}
                   onClick={() => navigate('/subjects')}>
             Change subject / exam
           </button>
