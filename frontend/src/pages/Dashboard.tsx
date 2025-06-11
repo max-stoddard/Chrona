@@ -36,6 +36,16 @@ export default function Dashboard() {
 
     async function fetchDashboardData() {
       try {
+        const allExams = await getUserExams(uid);
+
+        // Calculate progress percentage based on completed exams
+        if (allExams.length > 0) {
+          const currentDate = new Date();
+          const completedExams = allExams.filter(exam => new Date(exam.exam_date) < currentDate);
+          setCompletedExams(completedExams.length);
+          setTotalExams(allExams.length);
+        }
+
         // ── 1. Get recommended subject
         const recommendedSubject = await getRecommendedSubject(uid);
         if (cancelled) return;
