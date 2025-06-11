@@ -45,3 +45,19 @@ export async function createSubject(
 export async function deleteSubject(subject_id: string): Promise<void> {
   await apiRequest<void>('DELETE', `/api/users/*/subjects/${subject_id}`);
 }
+
+export async function getRecommendedSubject(user_id: String): Promise<Subject | null> {
+  const apiSubject = await apiRequest<
+    { subject_id: string; user_id: string; subject_name: string } | null
+  >('GET', `/api/users/${user_id}/subjects/recommendation`);
+
+  if (!apiSubject) {
+    return null;
+  }
+
+  return {
+    subject_id  : apiSubject.subject_id,
+    user_id     : apiSubject.user_id,
+    subject_name: apiSubject.subject_name,
+  };
+}
