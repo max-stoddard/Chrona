@@ -77,7 +77,13 @@ export default function SessionPage() {
     } else {
       console.warn("Finished but sessionID: " + sessionId + " or startTime: " + startTime + " is null")
     }
-    navigate('/');
+
+    navigate('/feedback', {
+        state: {
+          subject_name,
+          exam_name,
+        }
+      });
   };
 
   return (

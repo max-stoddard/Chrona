@@ -35,6 +35,24 @@
   margin-top: 20px auto 0;
 }
 
+.button-secondary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-top: 20px auto 0;
+    color: var(--color-text-button);
+    font-family: 'Inter-Bold', Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+}
+
 .icon-play {
   width: 18px;
   height: 18px;

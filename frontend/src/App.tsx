@@ -6,7 +6,7 @@ import SessionPage from './pages/Session';
 import SubjectDetailsPage from './pages/SubjectDetailsPage';
 import NOT_IMPLEMENTED from './pages/NotImplemented';
 import NotFound from './pages/NotFound';
-
+import SessionFeedback from './pages/SessionFeedback2';
 
 const App = () => (
   <Routes>
@@ -17,6 +17,7 @@ const App = () => (
     <Route path="/subjects/:subjectId" element={<SubjectDetailsPage />} />
     <Route path="/profile" element={<NOT_IMPLEMENTED />}/>
     <Route path="*" element={<NotFound />} />
+    <Route path="/feedback" element={<SessionFeedback />} />
 </Routes>
 );
 

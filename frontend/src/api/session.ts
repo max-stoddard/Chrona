@@ -5,13 +5,15 @@ import { apiRequest } from '../../utils/apiClient';
 export async function getSessions(userId: string): Promise<Session[]> {
   const apiSessions = await apiRequest<
     {
-      session_id     : string;
-      user_id        : string;
-      subject_id     : string;
-      exam_id        : string;
-      started_at     : string;
-      ended_at?      : string;
-      seconds_spent : number;
+      session_id        : string;
+      user_id           : string;
+      subject_id        : string;
+      exam_id           : string;
+      started_at        : string;
+      ended_at?         : string;
+      seconds_spent     : number;
+      session_confidence? : number;
+      session_focus?    : number;
     }[]
   >('GET', `/api/users/${userId}/sessions?limit=5`);
 

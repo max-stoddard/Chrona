@@ -19,11 +19,13 @@ export default function Dashboard() {
   const userId = useRequireAuth();
   const navigate = useNavigate();
 
-  const [subject, setSubject]     = useState<Subject | null>(null);
-  const [exam, setExam]           = useState<Exam | null>(null);
-  const [sessions, setSessions]   = useState<Session[]>([]);
-  const [loading, setLoading]     = useState(true);
-  const [upcoming, setUpcoming] = useState<Exam[]>([]);
+  const [subject, setSubject]               = useState<Subject | null>(null);
+  const [exam, setExam]                     = useState<Exam | null>(null);
+  const [sessions, setSessions]             = useState<Session[]>([]);
+  const [loading, setLoading]               = useState(true);
+  const [upcoming, setUpcoming]             = useState<Exam[]>([]);
+  const [completedExams, setCompletedExams] = useState(-1); // -1 means no progress bar
+  const [totalExams, setTotalExams]         = useState(0);
 
   // ───────────────────────── LOAD EVERYTHING ─────────────────────────
   useEffect(() => {
@@ -164,10 +166,38 @@ export default function Dashboard() {
             <span className="button-text">Start Session</span>
           </button>
 
-          <button className="button-text" style={{ marginTop: 8 }}
+          <button className="button-secondary" style={{ marginTop: 8 }}
                   onClick={() => navigate('/subjects')}>
             Change subject / exam
           </button>
+        </Card>
+
+        {/* Progress Card */}
+        <Card>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+            <h2 className="heading-2" style={{ margin: 0 }}>Exams Completed</h2>
+            <span className="body-1" style={{ whiteSpace: 'nowrap' }}>
+              ({completedExams} / {totalExams})
+            </span>
+          </div>
+          <div style={{ 
+            width: '100%',
+            height: '24px', 
+            backgroundColor: '#eee',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              width: `${(completedExams / totalExams) * 100}%`,
+              height: '100%',
+              backgroundColor: '#000000',
+              transition: 'width 0.3s ease'
+            }} />
+          </div>
         </Card>
 
         {/* Recent sessions */}
@@ -218,7 +248,6 @@ export default function Dashboard() {
             </Card>
             )}
         </div>
-
 
       </div>
     </div>

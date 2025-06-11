@@ -1,0 +1,73 @@
+@import './theme.css';
+@import './typography.css';
+
+.star {
+  font-size: 28px;
+  color: #cbd0d6;
+  cursor: pointer;
+  user-select: none;
+  margin: 0 4px;
+}
+
+.star.selected {
+  color: #ffca2c;
+}
+
+.feedback-card .card-header .heading-2 {
+  flex: none; /* Allow the heading to take up available space */
+  text-align: center; 
+  margin: 0 auto;
+  line-height: 1;
+  /* display: flex;
+  align-items: center; */
+}
+  
+
+.close-btn {
+  position: absolute;
+  right: -275%;
+  top: 20%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  /* margin-left: 0; */
+  line-height: 1;
+  /* padding: 0; */
+  /* display: flex;
+  align-items: center; */
+}
+
+.close-btn:hover {
+  color: var(--color-text-primary);
+}
+
+.feedback-card .card-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between;
+  gap: 8px; */
+}
+
+.emoji-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.emoji {
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease, font-size 0.2s ease;
+}
+
+.emoji:hover {
+  transform: scale(1.2);
+}
+
+.emoji.selected {
+  /* font-size: 28px; */
+  transform: scale(1.3);
+}

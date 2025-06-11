@@ -80,3 +80,9 @@
   box-shadow: none !important;
   display: inline;
 }
+
+.time-line {          /* matches exams-line look-and-feel */
+  margin: 0;
+  text-align: center;
+  min-height: 24px;
+}
