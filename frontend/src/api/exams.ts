@@ -23,6 +23,32 @@ export async function getExams(subjectId: string): Promise<Exam[]> {
   }));
 }
 
+export async function getRecommendedExam(
+  subjectId: string,
+  userId: string,
+): Promise<Exam | null> {
+  const apiExam = await apiRequest<
+    { 
+      exam_id: string;
+      subject_id: string;
+      exam_name: string;
+      exam_date: string;
+      exam_difficulty: number 
+    }[]
+  >('GET', `/api/users/${userId}/subjects/${subjectId}/recommendation`);
+
+  if (!apiExam || apiExam.length == 0) return null;
+
+  const first = apiExam[0];
+  return {
+    exam_id:       first.exam_id,
+    subject_id:    first.subject_id,           
+    exam_name:     first.exam_name,
+    exam_date:     first.exam_date,
+    exam_difficulty:first.exam_difficulty,
+  };
+}
+
 export async function getUserExams(userId: string): Promise<Exam[]> {
   const apiExams = await apiRequest<
     {
