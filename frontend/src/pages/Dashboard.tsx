@@ -6,8 +6,8 @@ import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 
 import { getSessions } from '../api/session';
-import { getSubject, getSubjects } from '../api/subjects';
-import { getUserExams, getUpcomingExams } from '../api/exams';
+import { getSubject, getSubjects, getRecommendedSubject } from '../api/subjects';
+import { getUserExams, getUpcomingExams, getRecommendedExam } from '../api/exams';
 import { useEffect, useState } from 'react';
 import { type Subject, type Exam, type Session } from '../types/types';
 import { useNavigate } from 'react-router-dom';
@@ -34,40 +34,39 @@ export default function Dashboard() {
 
     async function fetchDashboardData() {
       try {
-        // ── 1. Get all exams for this user
-        const allExams = await getUserExams(uid);
-        const soonest = await getUpcomingExams(uid);
-
-        console.log(allExams);
+        // ── 1. Get recommended subject
+        const recommendedSubject = await getRecommendedSubject(uid);
         if (cancelled) return;
 
-        // Pick the first exam (if any) and keep it in a local variable
-        const firstExam = allExams.length > 0 ? allExams[0] : null;
-        if (firstExam) {
-          setExam(firstExam);
+        if (!recommendedSubject) {
+          // No recommended subject, don't set anything and let the UI handle it
+          setLoading(false);
+          return;
         }
 
-        // ── 2. Determine which subject to show
-        if (firstExam) {
-          console.log(firstExam);
-          // Use the local firstExam to fetch its subject (not the state)
-          const owningSubject = await getSubject(firstExam.subject_id);
-          if (!cancelled && owningSubject) {
-            setSubject(owningSubject);
-          }
-        } else {
-          // No exams exist: fetch subjects and pick the first one (if any)
-          const subs = await getSubjects(uid);
-          if (cancelled) return;
+        // We have a recommended subject, set it
+        setSubject(recommendedSubject);
 
-          if (subs.length > 0) {
-            setSubject(subs[0]);
-          }
-        }
-
-        // ── 3. Fetch recent sessions, then filter by the local firstExam 
-        const allSessions = await getSessions(uid);
+        // ── 2. Get recommended exam for this subject
+        const recommendedExam = await getRecommendedExam(recommendedSubject.subject_id, uid);
         if (cancelled) return;
+
+        if (!recommendedExam) {
+          // No recommended exam, don't set exam and let the UI handle it
+          setLoading(false);
+          return;
+        }
+
+        // We have both recommended subject and exam, set the exam
+        setExam(recommendedExam);
+
+        // ── 3. Fetch recent sessions and upcoming exams
+        const [allSessions, soonest] = await Promise.all([
+          getSessions(uid),
+          getUpcomingExams(uid)
+        ]);
+        if (cancelled) return;
+        
         setSessions(allSessions);
         setUpcoming(soonest);
       } catch (err) {
