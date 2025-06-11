@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 
 import { getSessions } from '../api/session';
-import { getSubject, getSubjects, getRecommendedSubject } from '../api/subjects';
+import { getRecommendedSubject } from '../api/subjects';
 import { getUserExams, getUpcomingExams, getRecommendedExam } from '../api/exams';
 import { useEffect, useState } from 'react';
 import { type Subject, type Exam, type Session } from '../types/types';
