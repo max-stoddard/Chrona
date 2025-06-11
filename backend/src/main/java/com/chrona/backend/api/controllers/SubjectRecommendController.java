@@ -1,4 +1,4 @@
-package com.chrona.backend.api;
+package com.chrona.backend.api.controllers;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chrona.backend.db.dataAccess.SubjectReccomendationDao;
+import com.chrona.backend.db.dataAccess.SubjectRecommendationDao;
 import com.chrona.backend.db.models.UserSubject;
 
 @RestController
-@RequestMapping("/api/users/{userId}/recommendation")
-public class SubjectReccomendController {
+@RequestMapping("/api/users/{userId}/subjects/recommendation")
+public class SubjectRecommendController {
 
-    private final SubjectReccomendationDao  dao;
+    private final SubjectRecommendationDao  dao;
 
-    public SubjectReccomendController(SubjectReccomendationDao dao) {
+    public SubjectRecommendController(SubjectRecommendationDao dao) {
         this.dao = dao;
     }
 

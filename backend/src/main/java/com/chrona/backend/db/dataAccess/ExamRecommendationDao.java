@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -23,12 +24,12 @@ public class ExamRecommendationDao {
         rs.getObject("user_id", UUID.class),
         rs.getString("exam_name"),
         rs.getDate("exam_date").toLocalDate(),
-        rs.getInt("exam_difficulty"),
-        rs.getInt("exam_confidence"),
+        rs.getShort("exam_difficulty"),
+        rs.getShort("exam_confidence"),
         rs.getLong("exam_seconds_spent")
     );
 
-    public UserSubjectExam getRecommendedExam(UUID userId, UUID subjectId) {
+    public List<UserSubjectExam> getRecommendedExam(UUID userId, UUID subjectId) {
         String sql = """
             SELECT exam_id, subject_id, user_id, exam_name, exam_date,
                    exam_difficulty, exam_confidence, exam_seconds_spent
@@ -38,6 +39,6 @@ public class ExamRecommendationDao {
             LIMIT 1
         """;
 
-        return jdbcTemplate.queryForObject(sql, examRowMapper, userId, subjectId);
+        return jdbcTemplate.query(sql, examRowMapper, userId, subjectId);
     }
 }
