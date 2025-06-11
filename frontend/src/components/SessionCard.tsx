@@ -4,7 +4,7 @@ import useStopwatch from '../hooks/useStopwatch';
 import '../styles/sessioncard.css';
 import playIcon from '../assets/play-button-arrowhead.png';
 import pauseIcon from '../assets/pause.png';
-import finishIcon from '../assets/flag-checkered.png';
+import finishIcon from '../assets/stop-button.png';
 
 interface Props {
   subject: string;
