@@ -26,7 +26,7 @@ export default function Login() {
       if (error) throw error;
 
       if (data.user) {
-        navigate('/dashboard');
+        navigate('/');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to sign in');

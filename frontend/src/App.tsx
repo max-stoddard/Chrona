@@ -12,6 +12,7 @@ import SessionFeedback from './pages/SessionFeedback2';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
+import Profile from './pages/Profile';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -52,7 +53,7 @@ const App = () => (
     <Route path="/add-subject" element={<ProtectedRoute><AddSubjectPage /></ProtectedRoute>} />
     <Route path="/session" element={<ProtectedRoute><SessionPage /></ProtectedRoute>} />
     <Route path="/subjects/:subjectId" element={<ProtectedRoute><SubjectDetailsPage /></ProtectedRoute>} />
-    <Route path="/profile" element={<ProtectedRoute><NOT_IMPLEMENTED /></ProtectedRoute>} />
+    <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
     <Route path="/feedback" element={<ProtectedRoute><SessionFeedback /></ProtectedRoute>} />
     
     {/* Catch-all route */}
