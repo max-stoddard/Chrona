@@ -1,4 +1,4 @@
-import supabase from "./supabase";
+import { supabase } from "../src/utils/supabase";
 
 /**
  * A tiny auth helper that mimics Supabase’s API surface:

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import supabase from '../../utils/supabase';
+import { supabase } from '../utils/supabase';
 import '../styles/subjectdetails.css';
 
 interface Exam {
@@ -73,8 +73,26 @@ export default function SubjectDetailsPage() {
     }
   };
 
-  if (loading) return <p className="body-1 text-center">Loading…</p>;
-  if (!subject) return <p className="body-1 text-center">Subject not found.</p>;
+  if (loading) return (
+    <div className="subject-details-page">
+      <Navbar />
+      <main className="container">
+        <p className="body-1 text-center">Loading…</p>
+      </main>
+    </div>
+  );
+  
+  if (!subject) return (
+    <div className="subject-details-page">
+      <Navbar />
+      <main className="container">
+        <p className="body-1 text-center">Subject not found.</p>
+        <Link to="/subjects" className="button-secondary" style={{ display: 'block', width: 'fit-content', margin: '20px auto' }}>
+          Back to Subjects
+        </Link>
+      </main>
+    </div>
+  );
 
   return (
     <div className="subject-details-page">
