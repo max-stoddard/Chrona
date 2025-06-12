@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import supabase from '../../utils/supabase';
+import { supabase } from '../utils/supabase';
 import plusIcon from '../assets/plusSign.png';
 import '../styles/addsubject.css';
 

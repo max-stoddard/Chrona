@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SubjectCard from '../components/SubjectCard';
-import supabase from '../../utils/supabase';
+import { useRequireAuth } from '../hooks/useRequireAuth';
+import { supabase } from '../utils/supabase';
 import '../styles/subjectspage.css';
 import '../styles/typography.css';
 import type { Exam } from '../types/types';
@@ -19,23 +20,13 @@ export default function SubjectsPage() {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const userId = useRequireAuth();
 
   useEffect(() => {
-    /**
-     * Sign‑in with service credentials and pull subjects for the user.
-     * Credentials are temporary – replace when real auth is in place.
-     */
+    if (!userId) return;
     const init = async () => {
       try {
-        /* 1. authenticate (temp credentials) */
-        await supabase.auth.signOut();
-        const {
-          data: { user },
-          error: authError,
-        } = await supabase.auth.signInWithPassword({
-          email: 'test@test.com',
-          password: 'testuser',
-        });
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
         if (authError || !user) throw authError;
     
         /* 2. fetch subjects */
