@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
+import { supabase } from '../utils/supabase';
 import '../styles/typography.css';
 import '../styles/theme.css';
 
@@ -13,10 +14,18 @@ export default function Leaderboard() {
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLeaderboard = async () => {
+    const fetchData = async () => {
       try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email) {
+          setCurrentUser(user.email);
+        }
+
+        // Fetch leaderboard
         const api = import.meta.env.VITE_API_BASE_URL as string;
         const res = await fetch(`${api}/api/leaderboard`);
         
@@ -32,7 +41,7 @@ export default function Leaderboard() {
       }
     };
 
-    fetchLeaderboard();
+    fetchData();
   }, []);
 
   const formatTime = (seconds: number): string => {
@@ -96,13 +105,15 @@ export default function Leaderboard() {
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      padding: '12px 0',
-                      borderBottom: index < users.length - 1 ? '1px solid var(--color-border)' : 'none'
+                      padding: '12px 8px',
+                      borderBottom: index < users.length - 1 ? '1px solid var(--color-border)' : 'none',
+                      backgroundColor: currentUser === user.email ? '#f5f5f5' : 'transparent',
+                      borderRadius: '4px'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span className="body-1" style={{ minWidth: '30px' }}>#{index + 1}</span>
-                      <span className="body-1">{formatUserName(user.email)}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      {index === 0 && <span style={{ fontSize: '1.1em', lineHeight: '1', display: 'flex', alignItems: 'center' }}>👑</span>}
+                      <span className="heading-2" style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{formatUserName(user.email)}</span>
                     </div>
                     <span className="body-1">{formatTime(user.totalSeconds)}</span>
                   </div>
