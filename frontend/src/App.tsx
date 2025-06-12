@@ -6,7 +6,7 @@ import SubjectsPage from './pages/Subjects';
 import AddSubjectPage from './pages/AddSubject';
 import SessionPage from './pages/Session';
 import SubjectDetailsPage from './pages/SubjectDetailsPage';
-// import NOT_IMPLEMENTED from './pages/NotImplemented';
+import Leaderboard from './pages/Leaderboard';
 import NotFound from './pages/NotFound';
 import SessionFeedback from './pages/SessionFeedback2';
 import Login from './pages/Login';
@@ -55,6 +55,7 @@ const App = () => (
     <Route path="/subjects/:subjectId" element={<ProtectedRoute><SubjectDetailsPage /></ProtectedRoute>} />
     <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
     <Route path="/feedback" element={<ProtectedRoute><SessionFeedback /></ProtectedRoute>} />
+    <Route path="/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
     
     {/* Catch-all route */}
     <Route path="*" element={<NotFound />} />

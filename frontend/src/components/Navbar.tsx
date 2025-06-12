@@ -18,6 +18,9 @@ const Navbar: React.FC = () => (
       <Link to="/subjects" className="navbar-link">
         Subjects
       </Link>
+      <Link to="/leaderboard" className="navbar-link">
+        Leaderboard
+      </Link>
       <Link to="/profile">
         <img className="navbar-avatar" src={avatar} alt="avatar" />
       </Link>
