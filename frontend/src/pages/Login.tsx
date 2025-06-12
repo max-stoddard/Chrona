@@ -95,7 +95,7 @@ export default function Login() {
 
             <button
               type="submit"
-              className="button-start"
+              className="add-subject button-start"
               disabled={isLoading}
               style={{ marginTop: '8px' }}
             >
