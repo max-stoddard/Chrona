@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, /*useNavigate*/ } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { supabase } from '../utils/supabase';
 import '../styles/subjectdetails.css';
