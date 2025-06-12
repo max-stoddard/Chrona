@@ -12,12 +12,14 @@ import { useEffect, useState } from 'react';
 import { type Subject, type Exam, type Session } from '../types/types';
 import { useNavigate } from 'react-router-dom';
 import { useRequireAuth } from '../hooks/useRequireAuth';
+import { supabase } from '../utils/supabase';
 
 import playIcon from '../assets/play-button-arrowhead.png';
 
 export default function Dashboard() {
   const userId = useRequireAuth();
   const navigate = useNavigate();
+  const [userName, setUserName] = useState<string>('User');
 
   const [subject, setSubject]               = useState<Subject | null>(null);
   const [exam, setExam]                     = useState<Exam | null>(null);
@@ -94,6 +96,19 @@ export default function Dashboard() {
     };
   }, [userId]);
 
+  useEffect(() => {
+    const fetchUserEmail = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        // Get the part before the @ symbol
+        const emailName = user.email.split('@')[0];
+        // Capitalize the first letter
+        setUserName(emailName.charAt(0).toUpperCase() + emailName.slice(1));
+      }
+    };
+    fetchUserEmail();
+  }, []);
+
   /* ───────────────────────── NAV HELPERS ───────────────────────── */
   const startSession = () => {
     if (!subject || !exam) return;
@@ -116,7 +131,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back, Sarah!</h1>
+          <h1 className="heading-1">Welcome back, {userName}!</h1>
           <Card><p className="body-1">Loading your data…</p></Card>
         </div>
       </div>
@@ -127,7 +142,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back, Sarah!</h1>
+          <h1 className="heading-1">Welcome back, {userName}!</h1>
           <Card>
             <p className="heading-2">You don't have any subjects yet</p>
             <button className="button-start" onClick={() => navigate('/add-subject')}>
@@ -143,7 +158,7 @@ export default function Dashboard() {
     return (
       <div className="dashboard"><Navbar />
         <div className="content-wrapper">
-          <h1 className="heading-1">Welcome back, Sarah!</h1>
+          <h1 className="heading-1">Welcome back, {userName}!</h1>
           <Card>
             <p className="heading-2">No exams for {subject.subject_name}</p>
             <button className="button-start" onClick={() => navigate('/subjects')}>
@@ -160,7 +175,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <Navbar />
       <div className="content-wrapper">
-        <h1 className="heading-1">Welcome back, Sarah!</h1>
+        <h1 className="heading-1">Welcome back, {userName}!</h1>
 
         {/* Upcoming session */}
         <Card>
