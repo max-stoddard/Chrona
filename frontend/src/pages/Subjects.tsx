@@ -135,7 +135,7 @@ export default function SubjectsPage() {
         ) : subjects.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '20px' }}>
             <p className="body-1">You haven't added any subjects yet.</p>
-            <Link to="/add-subject" className="button-start" style={{ display: 'inline-block', marginTop: '10px' }}>
+            <Link to="/add-subject" className="add-subject button-text" style={{ display: 'inline-block', marginTop: '10px' }}>
               + Add your first subject
             </Link>
           </div>
