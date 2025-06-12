@@ -41,7 +41,14 @@ export default function Leaderboard() {
       }
     };
 
+    // Initial fetch
     fetchData();
+
+    // Set up polling every 5 seconds
+    const pollInterval = setInterval(fetchData, 5000);
+
+    // Clean up interval on unmount
+    return () => clearInterval(pollInterval);
   }, []);
 
   const formatTime = (seconds: number): string => {
