@@ -19,6 +19,7 @@ interface Subject {
 export default function SubjectsPage() {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const userId = useRequireAuth();
 
@@ -70,15 +71,16 @@ export default function SubjectsPage() {
         );
     
         setSubjects(enriched);
+        setError(null);
       } catch (err) {
-        /* eslint-disable no-console */
         console.error('Failed to load subjects', err);
+        setError('Failed to load subjects. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
     init();
-  }, []);
+  }, [userId]);
 
   const deleteSubject = async (subject_id: string) => {
     try {
@@ -98,7 +100,8 @@ export default function SubjectsPage() {
 
       setSubjects(subjects.filter((s) => s.subject_id !== subject_id));
     } catch (err) {
-      console.error("failed to delete subject", err);
+      console.error("Failed to delete subject", err);
+      alert("Failed to delete subject. Please try again later.");
     }
   };
 
@@ -115,7 +118,27 @@ export default function SubjectsPage() {
         </header>
 
         {loading ? (
-          <p className="body-1">Loading…</p>
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <p className="body-1">Loading your subjects...</p>
+          </div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <p className="body-1" style={{ color: 'red' }}>{error}</p>
+            <button 
+              className="button-secondary" 
+              onClick={() => window.location.reload()}
+              style={{ marginTop: '10px' }}
+            >
+              Try Again
+            </button>
+          </div>
+        ) : subjects.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '20px' }}>
+            <p className="body-1">You haven't added any subjects yet.</p>
+            <Link to="/add-subject" className="button-start" style={{ display: 'inline-block', marginTop: '10px' }}>
+              + Add your first subject
+            </Link>
+          </div>
         ) : (
           <div className="grid">
             {subjects.map((s) => (
