@@ -23,3 +23,12 @@ export interface Session {
   ended_at?: string;
   seconds_spent: number;
 }
+
+export type UserStatus = 'OFFLINE' | 'ONLINE' | 'STUDYING';
+
+export interface LeaderboardUser {
+  email: string;
+  totalSeconds: number;
+  status: UserStatus;
+  lastSeen: string;
+}

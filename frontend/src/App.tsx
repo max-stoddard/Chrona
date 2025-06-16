@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { supabase } from './utils/supabase';
+import { useGlobalPresence } from './hooks/useGlobalPresence';
 import Dashboard from './pages/Dashboard';
 import SubjectsPage from './pages/Subjects';
 import AddSubjectPage from './pages/AddSubject';
@@ -18,6 +19,9 @@ import Profile from './pages/Profile';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
+  // Use the global presence hook for authenticated users
+  useGlobalPresence();
+
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -33,11 +37,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (isAuthenticated === null) {
-    return <div>Loading...</div>; // Or your loading component
-  }
-
-  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+  return isAuthenticated === null ? (
+    <div>Loading...</div>
+  ) : isAuthenticated ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/login" replace />
+  );
 };
 
 const App = () => (

@@ -5,6 +5,7 @@ import SessionCard from '../components/SessionCard';
 import { createSession, finishSession } from '../api/session';
 import { useEffect, useRef, useState } from 'react';
 import { useRequireAuth } from '../hooks/useRequireAuth';
+import { useUserStatus } from '../hooks/useUserStatus';
 
 interface State {
   subject_name: string;
@@ -17,7 +18,9 @@ interface State {
 export default function SessionPage() {
   const { state } = useLocation();
   const navigate  = useNavigate();
-  const userId = useRequireAuth()
+  const userId = useRequireAuth();
+  // Track studying status
+  useUserStatus(true);
   const createdRef = useRef(false);
 
 

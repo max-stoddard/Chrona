@@ -26,6 +26,17 @@ export default function Login() {
       if (error) throw error;
 
       if (data.user) {
+        // Insert or update presence status
+        await supabase
+          .from('user_presence')
+          .upsert({
+            user_id: data.user.id,
+            user_status: 'ONLINE',
+            last_seen: new Date().toISOString()
+          }, {
+            onConflict: 'user_id'
+          });
+          
         navigate('/');
       }
     } catch (err) {

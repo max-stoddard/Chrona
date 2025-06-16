@@ -1,0 +1,43 @@
+.status-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-offline {
+  background-color: #9CA3AF;
+}
+
+.status-online {
+  background-color: #10B981;
+}
+
+.status-studying {
+  background-color: #F59E0B;
+}
+
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: var(--surface);
+}
+
+.leaderboard-entry.current-user {
+  background-color: var(--surface-highlight);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}

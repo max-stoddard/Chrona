@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import { supabase } from '../utils/supabase';
+import type { LeaderboardUser, UserStatus } from '../types/types';
 import '../styles/typography.css';
 import '../styles/theme.css';
-
-interface LeaderboardUser {
-  email: string;
-  totalSeconds: number;
-}
+import '../styles/status.css';
 
 export default function Leaderboard() {
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
@@ -16,83 +13,95 @@ export default function Leaderboard() {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Get current user
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user?.email) {
-          setCurrentUser(user.email);
-        }
-
-        // Fetch leaderboard
-        const api = import.meta.env.VITE_API_BASE_URL as string;
-        const res = await fetch(`${api}/api/leaderboard`);
-        
-        if (!res.ok) throw new Error(await res.text());
-        
-        const data = await res.json();
-        setUsers(data);
-      } catch (err) {
-        console.error('Failed to load leaderboard', err);
-        setError('Failed to load leaderboard data');
-      } finally {
-        setLoading(false);
+  const fetchData = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email) {
+        setCurrentUser(user.email);
       }
-    };
+
+      const [leaderboardRes, presenceResult] = await Promise.all([
+        fetch(`${import.meta.env.VITE_API_BASE_URL as string}/api/leaderboard`),
+        supabase.rpc('get_leaderboard_with_status')
+      ]);
+
+      if (!leaderboardRes.ok) {
+        throw new Error(await leaderboardRes.text());
+      }
+
+      const leaderboardData = await leaderboardRes.json();
+      
+      if (presenceResult.error) {
+        console.error('Failed to fetch presence data:', presenceResult.error);
+      }
+      
+      const mergedData = leaderboardData.map((user: { email: string; totalSeconds: number; }) => {
+        const presence = presenceResult.data?.find((p: { email: string; status: string; last_seen: string }) => 
+          p.email.toLowerCase() === user.email.toLowerCase()
+        );
+        return {
+          ...user,
+          status: (presence?.status as UserStatus) || 'OFFLINE',
+          lastSeen: presence?.last_seen || new Date().toISOString()
+        };
+      });
+
+      setUsers(mergedData);
+      setError(null);
+    } catch (err) {
+      console.error('Failed to load leaderboard', err);
+      setError('Failed to load leaderboard data');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Set up presence channel
+    const presenceChannel = supabase.channel('online-users');
+    
+    presenceChannel
+      .on('presence', { event: 'sync' }, () => {
+        fetchData();
+      })
+      .subscribe();
 
     // Initial fetch
     fetchData();
 
-    // Set up polling every 5 seconds
-    const pollInterval = setInterval(fetchData, 5000);
+    // Cleanup function
+    return () => {
+      presenceChannel.unsubscribe();
+    };
+  }, [fetchData]);
 
-    // Clean up interval on unmount
-    return () => clearInterval(pollInterval);
-  }, []);
-
-  const formatTime = (seconds: number): string => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    }
-    return `${minutes}m`;
+  const getStatusClass = (status: UserStatus) => {
+    return `status-indicator status-${status.toLowerCase()}`;
   };
 
-  const formatUserName = (email: string): string => {
-    const name = email.split('@')[0];
-    return name.charAt(0).toUpperCase() + name.slice(1);
-  };
-
-  if (loading) {
-    return (
-      <div className="dashboard">
-        <Navbar />
-        <div className="content-wrapper">
-          <h1 className="heading-1">Leaderboard</h1>
-          <Card>
-            <p className="body-1">Loading leaderboard data...</p>
-          </Card>
-        </div>
+  if (loading) return (
+    <div className="dashboard">
+      <Navbar />
+      <div className="content-wrapper">
+        <h1 className="heading-1">Leaderboard</h1>
+        <Card>
+          <div>Loading...</div>
+        </Card>
       </div>
-    );
-  }
+    </div>
+  );
 
-  if (error) {
-    return (
-      <div className="dashboard">
-        <Navbar />
-        <div className="content-wrapper">
-          <h1 className="heading-1">Leaderboard</h1>
-          <Card>
-            <p className="body-1" style={{ color: 'red' }}>{error}</p>
-          </Card>
-        </div>
+  if (error) return (
+    <div className="dashboard">
+      <Navbar />
+      <div className="content-wrapper">
+        <h1 className="heading-1">Leaderboard</h1>
+        <Card>
+          <div className="error">{error}</div>
+        </Card>
       </div>
-    );
-  }
+    </div>
+  );
 
   return (
     <div className="dashboard">
@@ -100,33 +109,19 @@ export default function Leaderboard() {
       <div className="content-wrapper">
         <h1 className="heading-1">Leaderboard</h1>
         <Card>
-          <div style={{ width: '100%' }}>
-            {users.length === 0 ? (
-              <p className="body-1">No study sessions recorded yet.</p>
-            ) : (
-              <div>
-                {users.map((user, index) => (
-                  <div 
-                    key={user.email}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: '12px 8px',
-                      borderBottom: index < users.length - 1 ? '1px solid var(--color-border)' : 'none',
-                      backgroundColor: currentUser === user.email ? '#f5f5f5' : 'transparent',
-                      borderRadius: '4px'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      {index === 0 && <span style={{ fontSize: '1.1em', lineHeight: '1', display: 'flex', alignItems: 'center' }}>👑</span>}
-                      <span className="heading-2" style={{ fontSize: '1.1em', fontWeight: 'bold' }}>{formatUserName(user.email)}</span>
-                    </div>
-                    <span className="body-1">{formatTime(user.totalSeconds)}</span>
-                  </div>
-                ))}
+          <div className="leaderboard-container">
+            {users.map((user) => (
+              <div 
+                key={user.email} 
+                className={`leaderboard-entry ${user.email === currentUser ? 'current-user' : ''}`}
+              >
+                <div className="user-info">
+                  <span className={getStatusClass(user.status)} />
+                  <span>{user.email}</span>
+                </div>
+                <span>{Math.floor(user.totalSeconds / 3600)} hours</span>
               </div>
-            )}
+            ))}
           </div>
         </Card>
       </div>
