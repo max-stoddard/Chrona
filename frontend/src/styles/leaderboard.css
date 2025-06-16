@@ -1,0 +1,241 @@
+@import './theme.css';
+@import './typography.css';
+
+/* Leaderboard Container */
+.leaderboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+/* Leaderboard Entry */
+.leaderboard-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background-color: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.leaderboard-entry:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-entry:hover {
+  background-color: #f9fafb;
+}
+
+/* Current User Highlight */
+.leaderboard-entry.current-user {
+  background-color: #f0f9ff;
+  border-left: 4px solid #3b82f6;
+  padding-left: 20px;
+}
+
+.leaderboard-entry.current-user::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #3b82f6;
+}
+
+/* User Info Section */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Inter-Medium', Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--color-text-primary);
+}
+
+/* Status Indicator - Enhanced */
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Status indicator with pulse animation for online/studying */
+.status-indicator.status-online::after,
+.status-indicator.status-studying::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50%;
+  background-color: inherit;
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+}
+
+/* Status Colors */
+.status-offline {
+  background-color: #94a3b8;
+}
+
+.status-online {
+  background-color: #10b981;
+}
+
+.status-studying {
+  background-color: #f59e0b;
+}
+
+/* Time Spent */
+.leaderboard-entry .time-spent {
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--color-text-primary);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Rank Number (optional enhancement) */
+.rank-number {
+  font-family: 'Inter-Bold', Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  min-width: 30px;
+  text-align: center;
+  margin-right: 16px;
+}
+
+/* Top 3 special styling */
+.leaderboard-entry:nth-child(1) .rank-number {
+  color: #fbbf24;
+  font-size: 24px;
+}
+
+.leaderboard-entry:nth-child(2) .rank-number {
+  color: #94a3b8;
+  font-size: 22px;
+}
+
+.leaderboard-entry:nth-child(3) .rank-number {
+  color: #f97316;
+  font-size: 21px;
+}
+
+/* Empty state */
+.leaderboard-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-family: 'Inter-Regular', Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* Loading state */
+.leaderboard-loading {
+  padding: 40px;
+  text-align: center;
+}
+
+.leaderboard-loading::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-text-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state */
+.error {
+  color: #ef4444;
+  font-family: 'Inter-Medium', Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .leaderboard-entry {
+    padding: 16px 20px;
+  }
+  
+  .user-info {
+    font-size: 14px;
+    line-height: 21px;
+  }
+  
+  .leaderboard-entry .time-spent {
+    font-size: 16px;
+    min-width: 70px;
+  }
+  
+  .rank-number {
+    font-size: 18px;
+    min-width: 25px;
+    margin-right: 12px;
+  }
+}
+
+/* Animation for entry appearance */
+.leaderboard-entry {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtle shadow for depth */
+.leaderboard-container {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}

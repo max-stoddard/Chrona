@@ -5,7 +5,7 @@ import { supabase } from '../utils/supabase';
 import type { LeaderboardUser, UserStatus } from '../types/types';
 import '../styles/typography.css';
 import '../styles/theme.css';
-import '../styles/status.css';
+import '../styles/leaderboard.css';
 
 const formatTime = (totalSeconds: number): string => {
   const hours = Math.floor(totalSeconds / 3600);
@@ -100,7 +100,7 @@ export default function Leaderboard() {
       <div className="content-wrapper">
         <h1 className="heading-1">Leaderboard</h1>
         <Card>
-          <div>Loading...</div>
+          <div className="leaderboard-loading">Loading leaderboard</div>
         </Card>
       </div>
     </div>
@@ -124,19 +124,29 @@ export default function Leaderboard() {
       <div className="content-wrapper">
         <h1 className="heading-1">Leaderboard</h1>
         <Card>
-          <div className="leaderboard-container">
-            {users.map((user) => (
-              <div 
-                key={user.email} 
-                className={`leaderboard-entry ${user.email === currentUser ? 'current-user' : ''}`}
-              >              <div className="user-info">
-                <span className={getStatusClass(user.status)} />
-                <span>{user.email.split('@')[0]}</span>
-              </div>
-              <span className="time-spent">{formatTime(user.totalSeconds)}</span>
-              </div>
-            ))}
-          </div>
+          {users.length === 0 ? (
+            <div className="leaderboard-empty">
+              No users on the leaderboard yet. Start studying to claim the top spot!
+            </div>
+          ) : (
+            <div className="leaderboard-container">
+              {users.map((user, index) => (
+                <div 
+                  key={user.email} 
+                  className={`leaderboard-entry ${user.email === currentUser ? 'current-user' : ''}`}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span className="rank-number">#{index + 1}</span>
+                    <div className="user-info">
+                      <span className={getStatusClass(user.status)} />
+                      <span>{user.email.split('@')[0]}</span>
+                    </div>
+                  </div>
+                  <span className="time-spent">{formatTime(user.totalSeconds)}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
       </div>
     </div>
