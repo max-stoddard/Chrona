@@ -1,7 +1,6 @@
 package com.chrona.backend.db.dataAccess;
 
 import com.chrona.backend.db.models.UserSubject;
-import com.chrona.backend.db.models.UserSubjectExam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,9 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -38,9 +34,12 @@ public class SubjectRecommendationDao {
                 ORDER BY s.subject_seconds_spent ASC, MIN(e.exam_date) ASC
                 LIMIT 1
                 """;
-        return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);
+        
+        try {
+            return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);
+        } catch (EmptyResultDataAccessException e) {
+            // No subjects found with future exams - this is a valid case
+            return null;
+        }
     }
-
-
-    
 }

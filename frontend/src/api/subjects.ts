@@ -56,17 +56,21 @@ export async function deleteSubject(subject_id: string): Promise<void> {
 }
 
 export async function getRecommendedSubject(user_id: String): Promise<Subject | null> {
-  const apiSubject = await apiRequest<
-    { subject_id: string; user_id: string; subject_name: string } | null
-  >('GET', `/api/users/${user_id}/subjects/recommendation`);
+  try {
+    const apiSubject = await apiRequest<
+      { subject_id: string; user_id: string; subject_name: string; subject_seconds_spent: number }
+    >('GET', `/api/users/${user_id}/subjects/recommendation`);
 
-  if (!apiSubject) {
+    return {
+      subject_id  : apiSubject.subject_id,
+      user_id     : apiSubject.user_id,
+      subject_name: apiSubject.subject_name,
+      subject_seconds_spent: apiSubject.subject_seconds_spent,
+    };
+  } catch (error) {
+    // If we get a 404, that means no subjects with future exams exist
+    // This is a valid case, not an error
+    console.log('No recommended subjects found');
     return null;
   }
-
-  return {
-    subject_id  : apiSubject.subject_id,
-    user_id     : apiSubject.user_id,
-    subject_name: apiSubject.subject_name,
-  };
 }
