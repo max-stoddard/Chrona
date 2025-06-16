@@ -7,6 +7,12 @@ import '../styles/typography.css';
 import '../styles/theme.css';
 import '../styles/status.css';
 
+const formatTime = (totalSeconds: number): string => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  return `${hours}h ${minutes}m`;
+};
+
 export default function Leaderboard() {
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,12 +124,11 @@ export default function Leaderboard() {
               <div 
                 key={user.email} 
                 className={`leaderboard-entry ${user.email === currentUser ? 'current-user' : ''}`}
-              >
-                <div className="user-info">
-                  <span className={getStatusClass(user.status)} />
-                  <span>{user.email}</span>
-                </div>
-                <span>{Math.floor(user.totalSeconds / 3600)} hours</span>
+              >              <div className="user-info">
+                <span className={getStatusClass(user.status)} />
+                <span>{user.email.split('@')[0]}</span>
+              </div>
+              <span className="time-spent">{formatTime(user.totalSeconds)}</span>
               </div>
             ))}
           </div>
