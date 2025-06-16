@@ -9,7 +9,7 @@ import SessionPage from './pages/Session';
 import SubjectDetailsPage from './pages/SubjectDetailsPage';
 import Leaderboard from './pages/Leaderboard';
 import NotFound from './pages/NotFound';
-import SessionFeedback from './pages/SessionFeedback2';
+import SessionFeedback from './pages/SessionFeedback';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
