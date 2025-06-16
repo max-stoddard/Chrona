@@ -29,10 +29,13 @@ public class SubjectRecommendationDao {
 
     public UserSubject getSubject(UUID userId) {
         final String sql = """
-                SELECT subject_id, user_id, subject_name, subject_seconds_spent
-                FROM user_subjects
-                WHERE user_id = ?
-                ORDER BY subject_seconds_spent ASC
+                SELECT s.subject_id, s.user_id, s.subject_name, s.subject_seconds_spent
+                FROM user_subjects s
+                INNER JOIN user_subject_exams e ON s.subject_id = e.subject_id
+                WHERE s.user_id = ?
+                AND e.exam_date >= CURRENT_DATE
+                GROUP BY s.subject_id, s.user_id, s.subject_name, s.subject_seconds_spent
+                ORDER BY s.subject_seconds_spent ASC, MIN(e.exam_date) ASC
                 LIMIT 1
                 """;
         return jdbcTemplate.queryForObject(sql, ROW_MAPPER, userId);

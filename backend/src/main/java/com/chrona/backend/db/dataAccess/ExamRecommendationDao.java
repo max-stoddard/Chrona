@@ -34,7 +34,9 @@ public class ExamRecommendationDao {
             SELECT exam_id, subject_id, user_id, exam_name, exam_date,
                    exam_difficulty, exam_confidence, exam_seconds_spent
             FROM user_subject_exams
-            WHERE user_id = ? AND subject_id = ?
+            WHERE user_id = ? 
+            AND subject_id = ? 
+            AND exam_date >= CURRENT_DATE
             ORDER BY exam_seconds_spent ASC
             LIMIT 1
         """;
