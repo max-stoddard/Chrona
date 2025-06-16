@@ -45,9 +45,14 @@ export default function Leaderboard() {
         const presence = presenceResult.data?.find((p: { email: string; status: string; last_seen: string }) => 
           p.email.toLowerCase() === user.email.toLowerCase()
         );
+
+        // Check if user has been seen in the last minute
+        const lastSeen = presence?.last_seen ? new Date(presence.last_seen) : null;
+        const isOnline = lastSeen && (new Date().getTime() - lastSeen.getTime() < 60000); // 60 seconds
+
         return {
           ...user,
-          status: (presence?.status as UserStatus) || 'OFFLINE',
+          status: isOnline ? (presence?.status as UserStatus) : 'OFFLINE',
           lastSeen: presence?.last_seen || new Date().toISOString()
         };
       });
