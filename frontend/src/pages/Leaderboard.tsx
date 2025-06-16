@@ -69,9 +69,13 @@ export default function Leaderboard() {
     // Initial fetch
     fetchData();
 
+    // Set up polling every 1 second
+    const pollInterval = setInterval(fetchData, 1000);
+
     // Cleanup function
     return () => {
       presenceChannel.unsubscribe();
+      clearInterval(pollInterval);
     };
   }, [fetchData]);
 
